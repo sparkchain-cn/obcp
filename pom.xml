@@ -18,6 +18,8 @@
     <module>obcp-cache-redis</module>
     <module>obcp-cache-memory</module>
     <module>obcp-consul</module>
+    <module>obcp-json</module>
+    <module>obcp-spring</module>
   </modules>
 
 	<properties>
