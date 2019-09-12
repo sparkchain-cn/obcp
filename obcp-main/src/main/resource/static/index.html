@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>火花区块链接入平台</title>
+	<#include "/common/common.html">
+</head>
+<body class="main_body">
+
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-header header">
+			<div class="layui-logo">
+				<img src="/admin/images/logo.png" class="logo-img" />
+			</div>
+			<ul class="layui-nav layui-layout-right">
+				<li class="layui-nav-item layui-nav-child-item" >
+		            <a href="javascript:;" id="clientNotify" class="layui-icon layui-icon-notice" >
+		              <i class="layui-icon "></i> 消息
+		              <span class="layui-badge-dot" style="display: none;" ></span>
+		            </a>
+          		</li>
+				<li class="layui-nav-item layui-nav-child-item"><a
+					href="javascript:;"> <i
+						class="layui-icon layui-icon-reply-fill"></i>联系我们
+				</a>
+					<dl class="layui-nav-child" style="cursor: pointer">
+						<dd>
+							<div class="count-img-item">
+								<img src="/images/qrcode.jpg" class="count-img">
+								<div class="count-img-text">
+									<p>
+										<img src="/images/phone.png"><span>13607000821（彭先生）</span>
+									</p>
+									<p>
+										<img src="/images/email.png"><span>service@sparkchain.cn</span>
+									</p>
+								</div>
+							</div>
+						</dd>
+
+					</dl></li>
+				<li class="layui-nav-item"><a href="javascript:;"> <#if
+							user.icon> <img src=${user.icon} class="layui-nav-img">
+						<#else> <img src="/admin/images/avent.jpg"
+							class="layui-nav-img"></#if> 欢迎 <span id="user">${user.nickname}</span>
+				</a>
+					<dl class="layui-nav-child" style="cursor: pointer">
+						<dd>
+							<a id="userInfo"><i class="layui-icon layui-icon-username"></i>个人资料</a>
+						</dd>
+						<dd>
+							<a href="/updatePwd"><i
+								class="layui-icon layui-icon-password"></i>修改密码</a>
+						</dd>
+						<dd>
+							<a id="logout" href="/logout"><i
+								class="iconfont icon-loginout"></i>退出登录</a>
+						</dd>
+					</dl></li>
+				<li class="layui-nav-item"></li>
+			</ul>
+		</div>
+
+		<div class="layui-side layui-bg-coffee">
+			<div class="navBar"></div>
+		</div>
+
+		<!-- 右侧内容 -->
+		<div class="layui-body layui-form" style="bottom: 0px">
+			<div class="layui-tab marg0" lay-filter="bodyTab" style="left: 0;"
+				id="top_tabs_box" lay-allowClose="true" >
+				<input type="hidden" id="a_c_t_r_k_val" value="${appidRedisKey!}">
+				<ul class="layui-tab-title top_tab" id="top_tabs">
+					<li lay-id="welcome" class="layui-this"><cite>欢迎页</cite></li>
+				</ul>
+				<ul class="layui-nav closeBox" style="padding-left: 0px">
+					<li class="layui-nav-item"><a href="javascript:;"><i
+							class="layui-icon">&#xe631;</i> 页面操作 <i class="layui-icon">&#xe625;</i></a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="javascript:;" class="refresh refreshThis"><i
+									class="layui-icon">&#xe669;</i> 刷新当前</a>
+							</dd>
+							<dd>
+								<a href="javascript:;" class="closePageOther"><i
+									class="layui-icon">&#x1006;</i> 关闭其他</a>
+							</dd>
+							<dd>
+								<a href="javascript:;" class="closePageAll"><i
+									class="layui-icon">&#x1006;</i> 关闭全部</a>
+							</dd>
+						</dl></li>
+				</ul>
+				<div class="layui-tab-content clildFrame">
+					<div class="layui-tab-item layui-show">
+						<iframe src="/welcome"></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+	<div class="layui-footer ">
+		<p class="text-center copyright">COPYRIGHT@版权所有烨链(上海)科技有限公司沪ICP备17052131号</p>
+	</div>
+
+	<script src="/js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/js/leftNav.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+			//JavaScript代码区域
+	layui.use(['element', 'jquery'], function() {
+		var element = layui.element;
+         $ = layui.jquery;
+         //当前登录名
+        /*  var userId = ;
+         var userApp = ; */
+         window.sessionStorage.setItem("userId",'${userId}');
+
+         $("#logout").click(function () {
+         	if($("#top_tabs li").length > 1) {
+         		$("#top_tabs li").each(function() {
+         			if($(this).attr("lay-id") != '') {
+         				element.tabDelete("bodyTab", $(this).attr("lay-id")).init();
+         				window.sessionStorage.removeItem("menu");
+         				menu = [];
+         				window.sessionStorage.removeItem("curmenu");
+         			}
+         		})
+         	}
+         });
+         
+         var url = window.location.pathname;
+	        console.log(url)
+	       var flag = window.sessionStorage.getItem("flg");
+	        
+		if(url != '/index'){
+        	if(flag == '1'){
+        		element.tabDelete("bodyTab", $(this).attr("lay-id")).init();
+				window.sessionStorage.removeItem("menu");
+				menu = [];
+				window.sessionStorage.removeItem("curmenu");
+				window.sessionStorage.removeItem("flg");
+			}
+		}
+	        
+		$("#clientNotify").click(function(){
+        	 layer.open({
+ 		        type: 2,
+ 		        title: '系统消息',
+ 		        area: ['80%', '80%'],
+ 		        content: '/clientnotify/list',
+ 		        zIndex: layer.zIndex, //重点1,
+ 		        end:function () {
+ 		        	$(".layui-badge-dot").hide();
+ 		        }
+ 		      });
+        });
+
+         
+         $("#userInfo").click(function(){
+         	 layer.open({
+  		        type: 2,
+  		        title: '个人资料',
+  		        area: ['70%', '80%'],
+  		        content: '/userInfo',
+  		        zIndex: layer.zIndex, //重点1,
+  		        end:function () {
+  		        		//window.location.reload();
+  		        }
+  		      });
+         });
+         
+         //获取用户未读消息数量
+         $.post("/v1/notify/getNotifyNumber",function(response){
+     		if(response){
+     			$(".layui-badge-dot").hide();
+     			if(response.count>0){
+     				$(".layui-badge-dot").show();
+     			}
+     		}
+     	 });
+
+        var t = function(){
+        	 setTimeout(function(){
+            	 $.post("/connection",function(response){
+            		t();
+            	 });
+             },1200000);
+        }
+        t();
+	});
+</script>
+</body>
+
+</html>

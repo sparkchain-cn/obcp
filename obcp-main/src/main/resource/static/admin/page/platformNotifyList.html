@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>平台通知列表</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="/admin/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="/admin/css/main.css" media="all" />
+	<script type="text/javascript" src="/admin/layui/layui.js"></script>
+	<script type="text/javascript" src="/js/main.js"></script>
+</head>
+<body class="childrenBody layui-bg-gray">
+	<div class="layui-fluid layui-bg-white">
+		<div class="" id="search_app" class="search" style="margin-top: 1em;">
+			<div class="layui-form" action="">
+				<div class="layui-form-item layui-form-item1">
+					<div class="layui-inline">
+						<label class="layui-form-label layui-form-label1">标题：</label>
+						<div class="layui-input-inline">
+							<input type="text" id="title" name="title" placeholder="请输入标题" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label layui-form-label1">用户：</label>
+						<div class="layui-input-inline">
+							<select  name="userId" lay-search="">
+								<option value="">请选择</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-inline">
+						<button class="layui-btn layui-btn-normal" id="searchBtn"
+							data-type="getInfo">
+							<i class="layui-icon ">&#xe615;</i> 搜索
+						</button>
+					</div>
+					<div class="layui-inline" style="float: right; margin-right: 5em;">
+					<button class="layui-btn layui-btn-normal" data-type="add" 
+						id="addBtn">发布通知</button>
+					</div>
+				</div>
+				</form>
+
+			</div>
+		</div>
+
+		<div class="layui-fluid layui-bg-white">
+			<table id="userIndex" lay-filter="userIndex"></table>
+		</div>
+	</div>
+</body>
+<script type="text/html" id="options">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+	<a class="layui-btn layui-btn-xs" lay-event="delete">删除</a>
+</script>
+<script type="text/javascript">
+    layui.use(['table', "form", "jquery", "laytpl", "laydate", "layer", "util"], function () {
+        var table = layui.table,form = layui.form,laytpl = layui.laytpl,laydate = layui.laydate,
+            layer = layui.layer, laypage = layui.laypage, util = layui.util, $ = layui.jquery, 
+            queryObj = {},curr = 1;
+
+        var render = table.render({
+            method: 'post',
+            elem: '#userIndex',
+            url: "/v1/notify/getPlatformNotifyList",
+            page: 1, //开启分页
+            limit: 10,
+            where: queryObj,
+            loading: true,
+            request: {
+                pageName: 'pagenum'
+                , limitName: 'pagesize'
+            },
+            parseData: function (res) {
+                console.log(res);
+                if (res.success) {
+                    res.code = 0;
+                }
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.count, //解析数据长度
+                    "data": res.data //解析数据列表
+                }
+            },
+            done: function (res, currPage, count) {
+                curr = currPage;
+            },
+            cols: [
+            	[ //表头
+                {
+					field: 'title',
+	                title: '标题',
+	                width: "30%",
+                    align: "center"
+                 }, {
+                    title: '目标',
+                    width: "10%",
+                    align: "center",
+                    templet: function (item) {
+ 	                    if (item.msgType==1) {
+ 	                    	return "指定用户";
+ 	                    }else if(item.msgType==2) {
+ 	                    	return "指定应用";
+ 	                    }
+ 	                    return "全平台";
+                 	}
+                 }, {
+                    title: '推送类型',
+                    width: "10%",
+                    align: "center",
+                    templet: function (item) {
+ 	                    if (item.pushType==1) {
+ 	                    	return "短信";
+ 	                    }
+ 	                    return "站内信";
+                 	}
+                }, {
+                    title: '弹出显示',
+                    align: "center",
+                    width: "10%",
+                    templet: function (item) {
+                        if (item.popup == 1) {
+                            return "是";
+                        }
+                        return "否";
+                    }
+                },{
+                    field: 'state',
+                    title: '状态',
+                    align: "center",
+                    width: "10%",
+                    templet: function (item) {
+                        if (item.state == "1") {
+                            return "正常";
+                        } else {
+                            return "已删除";
+                        }
+                    }
+                },{
+                	field: 'createtime',
+					title: '创建时间',
+					align:"center",
+					width:  "15%",
+					templet:function(item){
+						return layui.util.toDateString(item.createtime,"yyyy-MM-dd HH:mm:ss");
+					}
+                },{
+                    title: '操作',
+                    align: "center",
+                    toolbar: '#options',
+                   	width: "15%"
+                }
+            ]
+            ]
+        });
+
+        //表格渲染
+        var tableRender = function () {
+            render.reload({
+                where: queryObj, page: {
+                    curr: curr
+                }
+            });
+        }
+
+        //搜索
+        $('#searchBtn').on('click', function () {
+            queryObj = {};
+            var title = $("#title").val();
+            var userId = $("select[name='userId']").val();
+            //if(title)
+            	queryObj.title = title;
+            //if(userId)
+            	queryObj.userId = userId;
+            render.reload({
+                where: queryObj, page: {
+                    curr: 1
+                }
+            });
+        });
+        
+        $("#addBtn").on("click",function(){
+		   layer.open({
+		        type: 2,
+		        title: '添加消息通知',			      
+		        resize: false,
+		        area: ['70%', '70%'],
+		        content: '/platformnotify/edit',
+		        zIndex: layer.zIndex, //重点1,
+		        end:function () {	        	
+		        	render.reload({where:queryObj, page: {
+					    curr: 1
+					  }});		        	
+		        }
+			});
+		});
+        
+        //操作
+        table.on('tool(userIndex)', function (obj) {
+            var data = obj.data;
+            if (obj.event == "edit") {
+            	layer.open({
+    		        type: 2,
+    		        title: '添加消息通知',			      
+    		        resize: false,
+    		        area: ['80%', '80%'],
+    		        content: '/platformnotify/edit?mesid='+data.id,
+    		        zIndex: layer.zIndex, //重点1,
+    		        end:function () {	        	
+    		        	render.reload({where:queryObj, page: {
+    					    curr: 1
+    					  }});		        	
+    		        }
+    			});
+            }
+        });
+        
+        $.post("/v1/userextend/getAllUser",function(res){
+    		if(res.code == "200"){
+    			var data = res.data || [];
+    			var htmls = "";
+    			for(var i of data){
+    				htmls += '<option value = "' + i.id + '">'+ i.nickname +" - ("+ i.name + ')</option>';
+    			}
+    			$("select[name='userId']").append(htmls);
+    			form.render();
+    		}
+    	});
+    });
+
+
+</script>
+
+</html>

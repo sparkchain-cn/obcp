@@ -1,0 +1,8 @@
+@font-face {
+    font-family: "iconfont logo";
+    src: url('/admin/layuiIcon/iconfont.eot');
+    src: url('/admin/layuiIcon/iconfont.eot') format('embedded-opentype'),
+    url('/admin/layuiIcon/iconfont.woff') format('woff'),
+    url('/admin/layuiIcon/iconfont.ttf') format('truetype'),
+    url('/admin/layuiIcon/iconfont.svg') format('svg');
+}

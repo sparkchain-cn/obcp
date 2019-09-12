@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>操作日志</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="/admin/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" href="/admin/css/main.css" media="all"/>
+    <link rel="stylesheet" href="/admin/fee/css/search.css" media="all"/>
+    <script type="text/javascript" src="/admin/layui/layui.js"></script>
+    <script type="text/javascript" src="/admin/fee/js/jquery.min.js"></script>
+	<body class="childrenBody layui-bg-gray">
+	<div class="layui-fluid layui-bg-white">
+		<div class="layui-card">
+			<div class="layui-form height-auto layui-card-header layuiadmin-card-header-auto">
+				<form class="layui-form" action="">
+					<div class="layui-form-item layui-form-item1">
+						<div class="layui-form-item">			                               
+							<div id="out" class="layui-inline">
+			                    <div class="" id="ser_box" style="float: left;">
+			                        <label class="layui-form-label" style="width:auto">模块:</label>
+			                        <div class="layui-input-block input-block1">
+			                          <select name="module">
+								        <option value="0">--请选择--</option>								       
+								        <option value="1">用户模块</option>
+								        <option value="2">应用模块</option>
+								        <option value="3">安全模块</option>
+								        <option value="4">统计模块</option>
+								        <option value="5">收费模块</option>
+								        <option value="6">其他模块</option>
+								      </select>         	
+			                        </div>
+			                         	
+			                    </div>
+			                </div>							
+                            <div class="layui-inline">
+                                 <label class="layui-form-label" style="width:auto">操作对象:</label>
+                                     <div class="layui-input-block input-block1">
+                                     <input type="text" id="refval" name="refval"
+										placeholder="0表示系统对象" autocomplete="off" class="layui-input" >			                      
+			                        </div>	
+                              </div>
+							
+							<div class="layui-inline">
+                            	<label class="layui-form-label" style="width:auto">操作内容:</label>
+                                <div class="layui-input-block input-block1">
+                                <input type="text" id="remark" name="remark"
+									placeholder="操作内容" autocomplete="off" class="layui-input" >			                      
+	                        </div>	
+							</div>										
+							<div class="layui-inline" style="line-height:40px">
+								<div class="layui-input-inline layui-input-inline-sm">
+								 <button class="layui-btn layui-btn-normal" lay-submit lay-filter="app_search"><i
+                                        class="layui-icon ">&#xe615;</i> 搜索
+                                	 </button>   
+                                	</div>                    
+							</div>
+
+                         </div>
+					</div>
+				</form>
+			</div>
+			<div class="layui-card-body">
+				<table id="app_list" lay-filter="applist"></table>
+                <!--操作-->
+				<script type="text/html" id="operate">
+				
+				</script>			
+			</div>
+		</div>
+	</div>
+
+</body>
+  <script type="text/html" id="dateTpl">
+      {{layui.util.toDateString(d.createtime,"yyyy-MM-dd HH:mm:ss")}}
+  </script>
+
+<script>
+    var userId = "${userId}";
+    layui.config({
+        base: '/src/js/'
+    }).use(['jquery', 'table', 'form', 'sidebar', "laytpl", 'util', 'lodash'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            table = layui.table,
+            sidebar = layui.sidebar,
+            form = layui.form,
+            laytpl = layui.laytpl,
+            util = layui.util,tableRender,queryObj={},curr=1;
+
+        var renderTable = function(param){
+		  	queryObj = {};
+			var module = $("[name=module]").val();
+			var refval = $("[name=refval]").val();
+			var remark = $("[name=remark]").val();
+			if(module && parseInt(module) > 0){
+				queryObj.module = module;
+			}
+			if(refval){
+				queryObj.refval = refval.trim();
+			}
+			if(remark){
+				queryObj.remark = remark.trim();
+			}
+		  	tableRender = table.render({
+	  			method: 'post',
+	            // size: 'sm',
+	            limit: 10,
+	            elem: '#app_list',
+	            url: "/v1/operatelog/getList", //数据接口
+	            page: true, //开启分页
+	            where:queryObj,
+	            done:function(res, currPage, currCount){
+		  			curr = currPage;
+		  		},
+	            request: {
+	                pageName: 'pagenum',
+	                limitName: 'pagesize'
+	            },
+	            cols: [
+	                [ //表头
+                    {
+	                    field: 'module',                  
+	                    title: '模块',
+	                    align:"center",
+	                    templet:function(item){	
+	                    	switch(item.module){
+	                    		case 1:return "用户模块";break;
+	                    		case 2:return "应用模块";break;
+	                    		case 3:return "安全模块";break;
+	                    		case 4:return "统计模块";break;
+	                    		case 5:return "收费模块";break;
+	                    		case 6:return "其他模块";break;
+	                    	}
+	                    	
+	                    }
+	                }, {
+	                    field: 'refval',
+	                    align:"center",
+	                    title: '操作对象',
+	                    templet:function(item){	
+	                    	if(item.refval){
+	                    		if(item.refval == "0"){
+		                    		return "系统";
+		                    	}else{
+		                    		return item.refval;
+		                    	}
+	                    	}else{
+	                    		return "无"
+	                    	}
+	                    }
+	                    
+	                },{
+	                	 field: 'type',
+	                     align:"center",
+	                     title: '操作类型', 
+	                     templet:function(item){	
+	                    	switch(item.type){
+		                    	case 1:return "添加";break;
+		                    	case 2:return "修改";break;
+		                    	case 3:return "删除";break;
+	                    	}
+		                 }
+	                },{
+	                	 field: 'userName',
+	                     align:"center",
+	                     title: '操作人',
+	                     templet:function(item){
+	                    	 if(item.userName)
+	                    	 	return item.userName+"("+item.userMobile+")";
+	                    	 return "无";
+	                     }
+	                }, {                   
+	                    title: '操作时间',
+	                    align:"center",
+	                    field: 'createtime',
+	                    templet:function(item){	                    	
+	                    	 if(item.createtime)
+			                        return util.toDateString(item.createtime,"yyyy-MM-dd HH:mm:ss");
+			                    else
+			                        return "";
+	                    }
+	                },{
+	                	field: 'remark',
+	                    title: '操作内容',
+	                    width: 300,
+	                    align: 'left',
+	                }
+	                ]
+	            ],
+	        });
+
+		}
+
+        form.on('submit(app_search)', function (data) {      	 		
+            renderTable(data.field);
+            return false;
+        });
+
+        renderTable();
+    });
+
+ 
+
+</script>
+
+</html>

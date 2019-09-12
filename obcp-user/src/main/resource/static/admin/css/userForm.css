@@ -1,0 +1,28 @@
+.layui-upload-idcard{
+	display: flex
+}
+
+.layui-upload-list{
+	width:30%
+}
+
+.layui-upload-idcard .layui-upload-img{
+	width:70%
+}
+
+.layui-upload-idcard p{
+	text-align: center;
+	width:70%;
+	padding:10px 0
+}
+
+.layui-btn-up{
+	width:70%;
+	margin-top:60px
+}
+
+.layui-form-item .layui-form-title{
+	width:180px;
+	padding-right:30px;
+	
+}

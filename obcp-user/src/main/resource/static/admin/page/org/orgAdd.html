@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>添加机构</title>
+    <link rel="stylesheet" href="/admin/layui/css/layui.css" media="all">
+</head>
+<script type="text/javascript" src="/admin/layui/layui.js"></script>
+<script type="text/javascript" src="/js/user/util.js"></script>
+<body>
+<form id="roleForm" class="layui-form layui-form-pane" action=""
+      style="margin: 20px">
+    <input type="hidden" id="id" name="id">
+    <div class="layui-form-item">
+        <label class="layui-form-label">*编码：</label>
+        <div class="layui-input-block">
+            <input type="text" name="code" id="code" lay-verify="required"
+                   placeholder="请输入编码" autocomplete="off" class="layui-input"
+                   style="width: 600px">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">*名称：</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" id="name" lay-verify="required"
+                   placeholder="请输入名称" autocomplete="off" class="layui-input"
+                   style="width: 600px">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label layui-form-title">LOGO：</label>
+        <div class="layui-upload layui-upload-idcard">
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" src='' id="logoImg">
+                <p id="logoUploadBtn">点击上传</p>
+                <input type="hidden" name="logo">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">号码*：</label>
+        <div class="layui-input-block">
+            <input type="text" name="tel" id="tel" lay-verify="required"
+                   placeholder="请输入机构联系电话" autocomplete="off" class="layui-input"
+                   style="width: 600px">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">营业执照*：</label>
+        <div class="layui-input-block">
+            <input type="text" name="license" id="license" lay-verify="required"
+                   placeholder="请输入营业执照号" autocomplete="off" class="layui-input"
+                   style="width: 600px">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">地址：</label>
+        <div class="layui-input-block">
+            <textarea class="layui-textarea" name="addr" id="addr" lay-verify="content"
+                      placeholder="请输入机构地址" ></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">简介：</label>
+        <div class="layui-input-block">
+            <textarea class="layui-textarea" name="intro" id="intro" lay-verify="content"
+                      placeholder="请输入机构简介(200字)"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item" style="text-align: center;">
+        <a class="layui-btn" lay-submit="" lay-filter="submitBtn">保存</a>
+    </div>
+</form>
+</body>
+
+<script type="text/javascript">
+    layui.use(['form','jquery','upload'], function () {
+        var form = layui.form,$=layui.jquery,upload = layui.upload;
+        var userId = "${userId}",uploadPath = "${uploadPath}",downPath="${downPath}";
+        
+        form.verify({
+            content:function (value,item) {
+                if (value && value.length > 200){
+                    return "不能超过200字";
+                }
+            }
+        });
+        
+        var init = function(){
+            if(userId){
+                $.post("/v1/org/orgInfo",{userId:userId},function(response){
+                    if(typeof response == 'string'){
+                        response = JSON.parse(response);
+                    }
+                    if(response && response.code == 200){
+                        var role = response.data;
+                        if(role){
+                            $("#code").attr("disabled","disabled");
+                            $("#id").val(role.id);
+                            $("#code").val(role.code);
+                            $("#name").val(role.name);
+                            $("#logoImg").attr('src',downPath + "&id="+role.logo);
+                            $("#addr").val(role.addr);
+                            $("#license").val(role.license);
+                            $("#tel").val(role.tel);
+                            $("#intro").val(role.intro);
+                        }
+                        form.render();
+                    }
+                });
+            };
+        };
+
+        var uploadIdcard = upload.render({
+            elem: '#logoUploadBtn'
+            ,url: uploadPath
+            ,method:"post"
+            ,accept:'images'
+            ,multiple:true,
+            contentType: false,
+            processData: false,
+            enctype:"multipart/form-data"
+            ,acceptMime:'image/*'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(!res.success){
+                    return layer.msg('上传失败');
+                }else{
+                    $("#logoImg").attr("src",downPath + "&id="+res.data);
+                    $("[name=logo]").val(res.data);
+                }
+                //上传成功
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#idcardText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+
+        form.on("submit(submitBtn)",function(data){
+            var loading = layer.load(1);
+            var resource = data.field;
+            resource.supervisor = userId;
+            $.post("/v1/org/saveOrg",resource,function(response){
+                layer.close(loading);
+                if(response){
+                    layer.close(loading);
+                    if(response.code == 200){
+                        layer.msg("保存成功！", {
+                            icon: 6,
+                            time: 1000
+                        }, function() {
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        });
+                    }else{
+                        layer.msg(response.message, {
+                            icon: 5,
+                            time: 2000
+                        });
+                    }
+                }
+            }).error(function () {
+                layer.close(loading);
+                console.log("error");
+            });
+        });
+        init();
+    });
+</script>
+</html>

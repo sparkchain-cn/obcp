@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>cn.obcp</groupId>
@@ -10,29 +12,37 @@
 	<modules>
 		<module>obcp-dict</module>
 		<module>obcp-utils</module>
-    <module>obcp-user</module>
-    <module>obcp-main</module>
-    <module>obcp-resource</module>
-    <module>obcp-http</module>
-    <module>obcp-cache</module>
-    <module>obcp-cache-redis</module>
-    <module>obcp-cache-memory</module>
-    <module>obcp-consul</module>
-    <module>obcp-json</module>
-    <module>obcp-spring</module>
-  </modules>
+		<module>obcp-user</module>
+		<module>obcp-main</module>
+		<module>obcp-resource</module>
+		<module>obcp-http</module>
+		<module>obcp-cache</module>
+		<module>obcp-cache-redis</module>
+		<module>obcp-cache-memory</module>
+		<module>obcp-consul</module>
+		<module>obcp-json</module>
+		<module>obcp-spring</module>
+	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<framework.version>1.1-SNAPSHOT</framework.version>
-		<spring.boot.version>2.0.0.RELEASE</spring.boot.version>
+		<framework.version>0.0.1-SNAPSHOT</framework.version>
 		<fastjson.version>1.2.51</fastjson.version>
 		<redisson.version>3.10.4</redisson.version>
 
+		<spring.boot.version>2.0.0.RELEASE</spring.boot.version>
+		<spring.cloud.version>Finchley.RELEASE</spring.cloud.version>
+		<spring.cloud.openfeign.version>2.0.0.RELEASE</spring.cloud.openfeign.version>
+		<spring.cloud.consul.version>2.0.0.RELEASE</spring.cloud.consul.version>
 		<grpc.version>1.4.0</grpc.version>
 		<vertx.version>3.4.2</vertx.version>
+		<mybatis.version>3.4.6</mybatis.version>
+		<mybatis-spring-boot-starter.version>1.3.2</mybatis-spring-boot-starter.version>
+		<druid-spring-boot-starter.version>1.1.9</druid-spring-boot-starter.version>
+		<mapper-spring-boot-starter.version>1.2.4</mapper-spring-boot-starter.version>
+		<pagehelper-spring-boot-starter.version>1.2.3</pagehelper-spring-boot-starter.version>
 	</properties>
 
 	<distributionManagement>
@@ -64,6 +74,7 @@
 			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
 		</repository>
 	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>

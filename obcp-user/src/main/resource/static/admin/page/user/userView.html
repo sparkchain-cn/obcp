@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>用户查看</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="/admin/layui/css/layui.css" media="all" />
+<link rel="stylesheet" href="/admin/css/main.css" media="all" />
+
+<script type="text/javascript" src="/admin/layui/layui.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+<script type="text/javascript" src="/js/user/util.js"></script>
+</head>
+
+<body class="childrenBody layui-bg-gray">
+	<div class="layui-fluid layui-bg-white">
+
+		<div class="layui-container">
+			<!-- <h4 class="useredit-title">用户信息修改</h4> -->
+			<div class="layui-row">
+				<form class="layui-form" action="">
+					<input type="hidden" name=id>
+					<div class="layui-form-item">
+						<label class="layui-form-label">手机号码：</label>
+						<div class="layui-input-block">
+							<a style="line-height: 2.5" name="mobile"></a>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">昵称：</label>
+						<div class="layui-input-block">
+							<a style="line-height: 2.5" name="nickname"></a>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">姓名：</label>
+						<div class="layui-input-block">
+							<a style="line-height: 2.5" name="name"></a>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">性别：</label>
+						<div class="layui-input-block">
+							<a style="line-height: 2.5" name="sex"></a>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">身份证号：</label>
+						<div class="layui-input-block">
+							<a style="line-height: 2.5" name="cardnum"></a>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">办公电话：</label>
+						<div class="layui-input-block">
+							<a style="line-height: 2.5" name="officeTel"></a>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">办公手机：</label>
+						<div class="layui-input-block">
+							<a style="line-height: 2.5" name="officeMobile"></a>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">办公邮箱：</label>
+						<div class="layui-input-block">
+							<a style="line-height: 2.5" name="officeEmail"></a>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">工作地址：</label>
+						<div class="layui-input-block">
+							<a style="line-height: 2.5" name="officeAddr"></a>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">QQ号：</label>
+						<div class="layui-input-block">
+							<a style="line-height: 2.5" name="qq"></a>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">微信号：</label>
+						<div class="layui-input-block">
+							<a style="line-height: 2.5" name="weixin"></a>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<button id="back"
+								class="layui-btn layui-btn-radius layui-btn-normal">返回</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!--图片预览-->
+		<div id='prevModal'>
+			<img id='img_prev' />
+		</div>
+</body>
+
+<script>
+		layui.use(['form',"jquery"], function() {
+			var form = layui.form,
+				upload = layui.upload,
+				$ = layui.jquery,id=getUrlParam("id");
+			  if(id){
+				$("#reset").remove();
+				$.post("/v1/userextend/userInfo",function(data) {
+					if(data && data.code == 200){
+						var user = data.data || {};
+						$.each(user,function(i,value){
+							value = value || "";
+							if(i == "sex"){
+								$("a[name=sex]").text(value == "men"?"男":"女");
+							}
+							else{
+								$("a[name="+i+"]").text(value);
+							}
+						});				
+					}
+					form.render();
+					//		            }
+				});
+			}
+			
+			$("#back").on("click",function(){
+				 var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+		     parent.layer.close(index);
+			});
+
+		});
+	</script>
+
+</html>

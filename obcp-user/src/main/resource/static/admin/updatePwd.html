@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>火花区块链接入平台</title>
+<link rel="stylesheet" href="/admin/layui/css/layui.css">
+<link rel="stylesheet" type="text/css" href="/admin/css/main.css" />
+<link rel="stylesheet" type="text/css" href="/css/intival.css" />
+<link rel="stylesheet" href="/css/login.css">
+<script type="text/javascript" src="/js/checkBrowser.js"></script>
+<script type="text/javascript" src="/js/jsencrypt.min.js"></script>
+<script src="/admin/layui/layui.js"></script>
+</head>
+
+<body class="login_body">
+	<div class="bg_img">
+		<img src="/images/bg.png" alt="">
+	</div>
+	<section class="login-main layui-col-md5" >
+		<div class="layui-row">
+			<div class="layui-form">
+
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label" style="width: 85px">旧密码：</label>
+					<div class="layui-input-block" style="margin-left: 130px">
+						<input type="password" name="oldpassword" lay-verify="required"
+							placeholder="请输入旧密码" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label" style="width: 85px">新密码：</label>
+					<div class="layui-input-block" style="margin-left: 130px">
+						<input type="password" name="password" lay-verify="password"
+							placeholder="请输入新密码" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label" style="width: 85px">确认新密码：</label>
+					<div class="layui-input-block" style="margin-left: 130px">
+						<input type="password" name="rePassword" lay-verify="rePassword"
+							placeholder="请输入确认新密码" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-row" style="margin-top: 30px;">
+						<div class=" layui-col-xs4 layui-col-xs-offset3">
+							<button
+								class="layui-btn ayui-btn-lg layui-col-xs6 layui-btn-normal"
+								lay-submit lay-filter="formDemo" style="width: 90%">提交</button>
+						</div>
+						<div class=" layui-col-xs4" >
+							<button class="layui-btn ayui-btn-lg layui-col-xs6"
+								style="width: 90%" onclick="window.location.href='/index'">返回</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="footer copyright">COPYRIGHT@版权所有烨链(上海)科技有限公司沪ICP备17052131号</div>
+</body>
+
+
+<script>
+    //Demo
+    if(window !=top){
+        top.location.href=location.href;
+    }
+    layui.use('form', function(){
+        var form = layui.form;
+        $ = layui.jquery;
+        var key = "${key}";
+        
+		form.on('submit(formDemo)', function(data) {
+			var index = parent.layer.load(1, {
+				shade: [0.1, '#fff'] //0.1透明度的白色背景
+			});
+			var encrypt = new JSEncrypt();
+            encrypt.setPublicKey(key);
+			data.field.oldpassword = encrypt.encrypt(data.field.oldpassword);
+			data.field.password = encrypt.encrypt(data.field.password);
+			data.field.rePassword = encrypt.encrypt(data.field.rePassword);
+			 $.post('/v1/userextend/updatePassword', data.field, function(json) {
+				console.log(json);
+				//layer.msg(json.success ? res.msg : '提交失败.');
+				layer.closeAll();//关闭窗口
+				if(json.code==200){
+					parent.layer.closeAll(); //关闭窗口
+					layer.msg('修改成功！' ,{icon: 6,time: 2000}, function() { 
+			        	 location.href = "/v1/logout";
+			       });
+				}else{
+					parent.layer.closeAll(); //关闭窗口
+					layer.open({
+						content: json.message,
+					});
+				}
+			}, 'json'); 
+		});
+        //自定义验证
+        form.verify({
+            //必填的密码和确认密码
+             password: function(value) {
+               if (value === "")
+                  return "密码不能为空！";
+               var reg = new RegExp(/^(\w){6,18}$/);				  
+			   var numPatrn=new RegExp(/^[0-9]{1,20}$/);
+			   if(numPatrn.test(value)){
+		 		  return "密码不能为全为数字";
+		        }
+			   else if(!reg.test(value)){
+			 	  return "请输入6-18位，字母，数字或下滑线";
+			   }	
+               /*  var reg=new RegExp(/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[0-9])[a-zA-Z\d#@*&.]*$/);
+            	if(!reg.test(value)){
+            		return "请输入6-18位，且包含大小写英文字母和数字";
+            	} */
+            },
+            rePassword: function(value) {
+                if(value === "")
+                    return "密码不能为空！";
+                var pwd = $('input[name=password]').val();
+                if(pwd !== value)
+                    return "两次输入的密码不一致！";
+            },
+        });
+    });
+</script>
+
+</html>

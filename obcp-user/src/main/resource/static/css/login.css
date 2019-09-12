@@ -1,0 +1,152 @@
+@charset "utf-8";
+html, body {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.login_body {
+    width: 100%;
+    height: 100%;
+}
+
+.bg_img {
+    width: 100%;
+    height: 55%;
+    position: absolute;
+}
+
+.bg_img img {
+    height: 100%;
+    width: 100%;
+}
+
+.login-main {
+  	padding:41px 6% 56px;
+  	box-sizing:border-box;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 5px 24px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    position: absolute;
+    top: 26%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.layui-row {
+    width:100%;
+}
+
+.layui-row .layui-form {
+    width: 100%;
+    height: 100%;
+}
+
+.capc-logo {
+    width: 60%;
+    height: auto;
+    margin: 0 auto 5%;
+}
+
+.capc-logo img {
+    width: 100%;
+    height: auto;
+}
+
+.login_item {
+    width: 100%;
+    height: 60px;
+    box-sizing: border-box;
+    background: #F5F5F5;
+    margin-top: 26px;
+    margin-bottom: 0;
+    display:flex;
+}
+
+.layui-form-icon {
+    width: 18%;
+    height: 60px;
+    line-height:60px;
+    box-sizing: border-box;
+    text-align:center;
+    position:relative;
+}
+
+.layui-form-icon i{
+	font-size:24px;
+	color:#bdbdbd;
+}
+
+.layui-form-icon span {
+  	display: block;
+    height: 53%;
+    width: 1px;
+    background: #AAAAAA;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.item_block {
+    width: 81%;
+    height: 100%;
+    margin-left: 0;
+}
+
+.item_block input {
+    border: none;
+    height: 100%;
+    background: #F5F5F5;
+    font-size: 16px;
+    color: #BDBDBD;
+    padding-left: 17px;
+    border-radius: 0;
+}
+
+.layui-input-block {
+    min-height: 20px;
+}
+
+.layui-input-other {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    margin: 2% 0 9%;
+}
+
+.layui-input-other a {
+    color: #BDBDBD;
+}
+
+.layui-form-item {
+    margin-bottom: 7px;
+}
+
+.layui-btn-login {
+    width: 100%;
+    height: 60px;
+    background: rgba(53, 119, 238, 1);
+    border-radius: 2px;
+    color: #fff;
+    font-size: 18px;
+}
+
+.login_item_btn {
+    height: 11.7%;
+}
+
+.footer {
+    width: 100%;
+    text-align: center;
+    height: 25px;
+    line-height: 25px;
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    color: #AAA9A9;
+    font-size: 16px;
+}

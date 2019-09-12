@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>查看PAGE-REGISTER</title>
+<link rel="stylesheet" href="/admin/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="/admin/layui/css/xTree.css" media="all">
+</head>
+<body>
+	<div class="layui-fluid">
+		<div class="layui-row">
+			<div class="layui-fluid">
+				<div class="layui-card">
+					<div
+						class="layui-form layui-card-header layuiadmin-card-header-auto"
+						style="padding: 20px 0">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">编码:</label>
+								<div class="layui-input-block">
+									<input type="text" name="code" id="code" lay-verify="required"
+										placeholder="请输入编码" autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">路径:</label>
+								<div class="layui-input-block">
+									<input type="text" id="path" placeholder="请输入路径"
+										autocomplete="off" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<button class="layui-btn layui-btn-normal" id="searchBtn"
+									data-type="getInfo">
+									<i class="layui-icon ">&#xe615;</i> 搜索
+								</button>
+								<button class="layui-btn layui-btn-normal" 
+									id="generate">生成资源</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="layui-card-body">
+						<table id="role" lay-filter="role"></table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/html" id="tableOptions">
+
+	</script>
+		<script type="text/javascript" src="/admin/layui/layui.js"></script>
+		<script type="text/javascript" src="/admin/layui/xTree.js"></script>
+		<script>
+	layui.use(['form','table','jquery','util'], function () {
+	   var form = layui.form,table = layui.table,$=layui.jquery,util=layui.util,tableRender,curr=1,queryObj={},count = 0,limit = 10;
+     
+	   tableRender = table.render({
+		    elem: '#role'
+		    ,method:"post"
+		    ,url:'/v1/resources/pageRegisterList'
+		    ,where:queryObj
+	  		,page:false
+	  		,limit:limit
+	  		,loading:true
+	  		,done:function(res, currPage, currCount){
+	  			count = currCount;
+	  			curr = currPage;
+	  		}
+		    ,cols: [[
+		       {field:'serviceAt', title: '服务名',align:"center", width:"20%"}
+			  ,{field:'code', title: '资源编码',align:"center",width:"20%"}	
+		      ,{field:'path', title: '路径',align:"center",width:"20%"}		
+		      ,{field:'desc', title: '说明',align:"center",width:"20%"}
+               ,{field:'type', title: '资源类型',align:"center",templet:function(item){
+                       if(item.type == 1){ //
+                           return "文件夹";
+                       }else if(item.type == 2){ //
+                           return "页面";
+                       }else if(item.type == 3){ //
+                           return "数据接口";
+                       }else
+                           return "无";
+                   }}
+		    ]]
+		  });
+	   
+	   $("#generate").on("click",function(){
+           queryObj = buildParam();
+		   var tip = layer.open({
+               shadeClose: false
+               ,type: 3
+           });
+		   $.post("/v1/resources/generate",queryObj,function(res){
+			   layer.close(tip);
+			   if(res.success){
+				   layer.msg(res.message || "操作成功");
+			   }else{
+				   layer.msg(res.message || "操作失败",{icon:5});
+			   }
+			 
+		   },'json').error(function(){
+			   layer.msg("服务端异常",{icon:5});
+		   });
+	   });
+	   
+	   $("#searchBtn").on("click",function(){	
+			queryObj = buildParam();
+		    tableRender.reload({where:queryObj, page: {
+			    curr: 1
+			  }});
+	   });
+
+	   var buildParam = function(){
+           var params = {};
+           var path = $("#path").val();
+           var code = $("#code").val();
+           if(path){
+               params.path = path.trim();
+           }
+           if(code){
+               params.code = code.trim();
+           }
+           return params
+	   }
+	   
+	   table.on('tool(role)', function(obj){
+		    var data = obj.data;
+		   
+	   });
+	 	 
+	});
+</script>
+</body>
+</html>

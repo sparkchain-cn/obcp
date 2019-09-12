@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>添加资源</title>
+<link rel="stylesheet" href="/admin/layui/css/layui.css" media="all">
+</head>
+<script type="text/javascript" src="/admin/layui/layui.js"></script>
+<script type="text/javascript" src="/js/user/util.js"></script>
+
+<body>
+	<div class="layui-container" style="width: 760px">
+		<form id="resourceForm" class="layui-form" action="">
+			<input type="hidden" id="id" name="id">
+			<div class="layui-form-item ">
+				<label class="layui-form-label">父级资源：</label>
+				<div class="layui-input-block">
+					<input type="hidden" id="parentId" name="parentid">
+					<input type="text" id="parentName" lay-filter="parentName"
+						class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">*资源类型：</label>
+			    <div class="layui-input-block">
+			      <select id="resTypeCode" name="resTypeCode" lay-filter="resTypeCode" lay-verify="resTypeCodeVerify">
+			        <option value="">-请选择-</option>		
+			        <option value="1">文件夹</option>   
+			        <option value="2">页面</option>
+			        <option value="3">数据接口</option>
+			      </select>
+			    </div>
+			 </div>
+<!--			 <div class="layui-form-item">
+			    <label class="layui-form-label">*资源分组：</label>
+			    <div class="layui-input-block">
+			      <select id="resourceGroup" name="resourceGroup" lay-filter="resourceGroup" lay-verify="resGroupVerify">
+			        <option value="">-请选择-</option>		
+			        <option value="1">控制台管理系统</option>   
+			        <option value="2">APP管理端</option>
+			      </select>
+			    </div>
+			 </div>-->
+			<div class="layui-form-item">
+				<label class="layui-form-label">*资源名称：</label>
+				<div class="layui-input-block">
+					<input type="text" name="name" id="name" lay-verify="required"
+						placeholder="请输入资源名称" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">*资源编码：</label>
+				<div class="layui-input-block">
+					<input type="text" name="code" id="code" lay-verify="required"
+						placeholder="请输入资源编码" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			
+			<div class="layui-form-item aliasNameItem">
+				<label class="layui-form-label">*菜单名称：</label>
+				<div class="layui-input-block">
+					<input type="text" name="aliasName" id="aliasName"
+						lay-verify="verifyAlianameRequire" placeholder="请输入菜单名称" autocomplete="off"
+						class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item aliasNameItem">
+				<label class="layui-form-label">图标：</label>
+				<div class="layui-input-block">
+					<input type="text" name="icon" id="icon" placeholder="请输入图标"
+						autocomplete="off" class="layui-input" style="position: relative"><span
+						style="color: red; float: right; coloe: red; position: absolute; right: 14px; top: 10px; font-size: 12px">例如:"&
+						#xe67b"(https://www.layui.com/doc/element/icon.html,添加时请不带空格)</span>
+				</div>
+			</div>
+			<div class="layui-form-item pathItem">
+				<label class="layui-form-label">资源路径：</label>
+				<div class="layui-input-block">
+					<input type="text" name="path" id="path" placeholder="请输入资源路径"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+	<!--		 <div class="layui-form-item">
+		        <label class="layui-form-label">排序号</label>
+		        <div class="layui-input-block">
+		            <input type="number" name="sortnum" id="sortnum" lay-verify="sortnum"   placeholder="请输入" autocomplete="off" class="layui-input">
+		        </div>
+		    </div>-->
+			<div class="layui-form-item">
+				<label class="layui-form-label">描述：</label>
+				<div class="layui-input-block">
+					<textarea class="layui-textarea" name="description"
+						id="description" lay-verify="content" id="description"
+						placeholder="请输入资源描述"></textarea>
+				</div>
+			</div>
+			<div class="layui-form-item" style="text-align: center;">
+				<a class="layui-btn" lay-submit="" lay-filter="submitBtn">保存</a>
+				<!--<button id="reset" type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+			</div>
+		</form>
+	</div>
+</body>
+
+<script type="text/javascript">
+	layui.config({
+	    base: "../module/"
+	}).extend({
+	    treeSelect: "../../layui/lay/module/treeSelect/treeSelect"
+	}).use(['form','jquery','treeSelect'], function () {
+		var form = layui.form,$=layui.jquery,treeSelect=layui.treeSelect;
+		var sys_flag = false;
+        var id = getUrlParam("id"),parentid=getUrlParam("parent_id");
+        //加载父级
+        treeSelect.render({
+            // 选择器
+            elem: '#parentName',
+            // 数据
+            type:"post",
+            data: '/v1/resources/selectTree',
+            click:function(d){
+                //console.log(d);
+                $("#parentName").val(d.current.name);
+                $("#parentId").val(d.current.id);
+            },
+            success: function(d){
+                treeSelect.refresh('parentName');
+                init();
+            }
+        });
+
+		var init = function(){
+			var param = {id:id};
+
+			if(id){
+				$("#reset").remove();
+				$.post("/v1/resources/getInfo",param,function(response){
+
+					if(typeof response == 'string'){
+						response = JSON.parse(response);
+					}
+					if(response && response.code == 200){
+						var resource = response.data;
+						if(resource){
+							$("#id").val(resource.id);
+                            if (resource.parentid){
+                                treeSelect.checkNode("parentName", resource.parentid);
+                            }
+							$("#parentName").val(resource.parentName);
+
+							$("[name=resTypeCode]").children().each(function(){
+								if(this.value == resource.resTypeCode){
+									$(this).attr("selected","selected");
+								}
+							});
+							$("[name=resourceGroup]").children().each(function(){
+								if(this.value == resource.resourceGroup){
+									$(this).attr("selected","selected");
+								}
+							});
+
+							if(resource.resTypeCode == 1){ //文件夹
+				        		$(".pathItem").hide();
+				        	}else if(resource.resTypeCode == 3){ //接口
+				        		$(".aliasNameItem").hide();
+				        		sys_flag = false;
+				        	}
+							$("#name").val(resource.name);
+							$("#icon").val(resource.icon);
+
+							$("#aliasName").val(resource.aliasName);
+							$("#path").val(resource.path);
+							$("#sortnum").val(resource.sortnum || 1);
+							$("#parentName").val(resource.parentName);
+							$("#code").val(resource.code);
+							$("#description").val(resource.description);
+
+							form.render();
+						}
+					}
+				});
+			}else if (parentid){
+                $("#parentId").val(parentid);
+                treeSelect.checkNode("parentName", parentid);
+                form.render();
+            }
+		};
+		
+		form.verify({
+			verifyAlianameRequire:function(value,item){
+				if(sys_flag&&!value){
+					return "菜单名称不能为空！"
+				}
+			},
+			resTypeCodeVerify:function(value,item){
+				if(!value){
+					return "资源类型不能为空！"
+				}
+			},
+			resGroupVerify:function(value,item){
+				if(!value){
+					return "资源分组不能为空！"
+				}
+			},
+			sortnum:function(value,item){
+				if(isNaN(parseInt(value))){
+					return "请输入数字"
+				}else if(parseInt(value) < 0){
+					return "请输入大于零的整数";
+				}
+			}
+		})
+		
+		form.on('select(resTypeCode)', function(data){
+        	if(data.value == 1){ //文件夹
+        		$(".pathItem").hide();
+        	}else if(data.value == 2){ //页面
+        		$(".pathItem").show();
+        		$(".aliasNameItem").show();
+        		sys_flag = true;
+        	}else if(data.value == 3){ //接口
+        		$(".aliasNameItem").hide();
+        		sys_flag = false;
+        	}
+        	
+        });
+		
+		form.on("submit(submitBtn)",function(data){
+			var loading = layer.load(1);
+
+			var resource = data.field,url="/v1/resources/saveResource";
+			resource.resourceGroup = 1;
+			resource.parentid = $("#parentId").val();
+			if(resource.id){
+				url = "/v1/resources/updateResource"
+			}
+	 		$.post(url,resource,function(response){
+				layer.close(loading);
+				
+				if(response){
+					if(response.code == 200){
+					
+					 	layer.msg("保存成功！", {
+				            icon: 6,
+				            time: 1000
+				          }, function() {
+                            parent.reflushByNodeId();
+				            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+				            parent.layer.close(index); //再执行关闭
+				          }); 
+					}else{
+						layer.msg(response.message, {
+				            icon: 5,
+				            time: 2000
+				          });
+					}
+				}else{
+					layer.msg("返回错误", {
+			            icon: 5,
+			            time: 2000
+			          });
+				}
+				
+			});
+		});
+		
+	});
+	</script>
+</html>

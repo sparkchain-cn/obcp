@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>我的账号</title>
+    <meta name="renderer" content="webkit">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="/admin/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="/admin/css/main.css" media="all" />
+<link rel="stylesheet" href="/css/accountIndex.css" media="all" />
+<script type="text/javascript" src="/admin/layui/layui.js"></script>
+<style type="text/css">
+	.userInfo{
+	 	float:left;min-height:170px;height:auto;width: 100%;
+	 	margin-bottom: 10px;
+	 	text-overflow : ellipsis;
+	 	overflow: hidden;
+	 	}
+	.info_detail_card{		
+	    padding: 10px; 
+		height:140px;
+		vertical-align: middle;
+		text-align:center;
+    	position: relative;
+	}
+	.spc-div{
+		float:left;
+		width:48%;
+		vertical-align: middle;
+		text-align:center;
+    	position: relative;
+	}
+	
+	.spc-div img{
+		width:70%;
+		float:left
+	}
+	.card-container{
+		padding:10px;
+		height:100px;
+		background-color: #F7F7F7!important;
+	}
+	.spc-container{
+		padding:10px;
+		height:100px;
+		background-color:#F7F7F7!important;
+	}
+	.info-icon{
+		margin-top:10px;
+	}
+	.spc-detail-card{
+		margin-left:1%;
+		height:140px;
+		vertical-align: middle;
+		text-align:center;
+    	position: relative;
+    }
+    h1:{
+        font-weight: 400;
+	    width: 48%;
+	    text-align: right;
+	    float: left;
+    }
+    
+    .info-icon img{
+    	width:20%;
+    	
+    }
+    
+    .card-text{
+    padding-top:12px
+    }
+    
+    .card-flex{
+    	display:flex;
+    	align-items: center;
+    }
+    
+    
+	
+</style>
+</head>
+<body class="childrenBody layui-bg-gray">
+	<div class="layui-fluid layui-bg-white" style="background-color: #eee!important;">
+			<div class="layuiadmin-card-header-auto" style="color: #000;font-weight:bolder">
+				<h3  style="color: #000;font-weight:bolder">我的账号</h3>
+			</div>
+			<div class="layui-row layui-col-space15" >
+				<div class="layui-col-xs9" >				 
+				  <div class="layui-card layui-row userInfo">
+				  	  <div class="layui-card-header" >我的信息</div>
+					   <div class=" layui-col-xs4">
+							  <div class="layui-card-body info_detail_card info_detail_left">
+							  	<div class="card-container">
+								  	<div class="info-icon">
+								    	<img src='/admin/images/phone.png' title="联系电话" />
+								    </div>
+							       <div class="card-text" style="text-overflow:ellipsis;overflow: hidden;">
+							       <#if mobile > ${mobile}
+							       <#else>
+							       		无
+							       </#if>
+							       </div>	
+							    </div>				   
+							  </div>
+					  </div>	
+					   <div class=" layui-col-xs4">
+					  <div class="layui-card-body info_detail_card">
+					  	<div class="card-container">
+						  <div class="info-icon">
+						   		<img src='/admin/images/company.png' title="公司名称"  />
+						   </div> 
+						   <div class="card-text" style="text-overflow:ellipsis;overflow: hidden;">
+						    	 <#if company > ${company}
+							       <#else>
+							       		无
+							       </#if>
+						   </div>
+						</div>
+					  </div>
+					  </div>
+					  <div class=" layui-col-xs4">
+					  <div class="layui-card-body info_detail_card info_detail_right">
+						<div class="card-container">
+							<div class="info-icon">
+						   	 <img src='/admin/images/email.png' title="邮箱地址" />
+						    </div>  
+						   <div class="card-text" style="text-overflow:ellipsis;overflow: hidden;">					 
+					    		<#if email > ${email}
+							       <#else>
+							       		无
+							       </#if>
+					    	</div>
+						</div>
+					  </div>
+					  </div>
+				   </div>					    
+				</div>
+				<div class="layui-col-xs3" >				  
+					<div class="layui-card userInfo">	
+					  <div class="layui-card-header card-header">我的SPC</div>		         
+			          <div class="layui-card-body spc-detail-card">
+			          		<div class="card-container card-flex" >
+				          		<div class="spc-div">
+				          			<img src='/admin/images/spcbalance.png' title="SPC数量" />
+				          		</div>
+				            	<div class="spc-div">
+				            		<div ><span style="font-size: 12px;">SPC数量</span><br></div>
+				            		<div >				            			
+				            			<div class="layui-input-inline">
+				            				<label style="font-size: 22px;">0</label>
+				            				<label style="font-size: 12px;margin-left: 3px">(个)</label>
+				            			</div>
+				            		</div>													           
+				            	</div>
+			            	</div>
+			          </div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-row">
+				<div class="layui-card clearfix">
+				
+			          <div class="layui-card-header card-head">
+			          <div>接口查询次数</div>
+			          <a id="viewReadApi" class="more_btn ">查看收费查询接口 ></a>
+			          </div>
+			          <div class="layui-card-body">
+			            	<table id="appSurplus"></table>
+			          </div>
+				</div>
+				<div class="layui-card">
+			          <div class="layui-card-header card-head">接口上链次数  <a id="viewWriteApi" class="more_btn">查看收费上链接口 ></a></div>
+			          <div class="layui-card-body">
+			            	<table id="appWrite"></table>
+			          </div>
+				</div>
+				<div class="layui-card">
+			          <div class="layui-card-header">
+			          	<label style="float:left">近期购买</label>
+			          	<label style="float:right;cursor:Pointer" id="view_more" class="more_btn" >更多 ></label>
+			          </div>
+			          <div class="layui-card-body"> 	
+			            <table id="buyRecord"></table>
+			          </div>
+				</div>
+			</div>
+			<div class=""></div>
+	</div>
+</body>
+<script>
+layui.config({
+    base: '/src/js/'
+}).use(['jquery', 'table', 'form', 'sidebar', "laytpl", 'util', 'lodash'], function () {
+    var $ = layui.jquery,
+        layer = layui.layer,
+        table = layui.table,
+        sidebar = layui.sidebar,
+        form = layui.form,
+        laytpl = layui.laytpl,
+        util = layui.util;
+   	var userId = "${userId}";
+ 
+   	//应用余额
+    var renderTable = function(param){
+	  	var queryObj = {supervisor:userId,d:new Date().getTime()};param = param || {};
+	  	for(var i in param){
+		  if(param[i]){
+			  queryObj[i] = param[i];
+		  }
+	  	}
+		
+	  	table.render({
+  			method: 'post',
+            // size: 'sm',                   
+            elem: '#appSurplus',
+            url: "/v1/chainvisit/surplus/userFeePage", //数据接口
+            page: false, //开启分页
+            where:queryObj,
+            skin:"line",
+          
+            request: {
+                pageName: 'pagenum',
+                limitName: 'pagesize'
+            },
+            done: function(res, curr, count){
+            	count = 0;
+            },
+            cols: [
+                [{
+                     field: 'name',
+                     title: '应用名称',
+                     align:"center"               
+                 }, {
+                    field: 'code',                  
+                    title: '应用编码',
+                    align:"center"
+                }, {
+                    field: 'freeVisit',                  
+                    title: '是否收费',
+                    align:"center",
+                    templet:function(item){
+                    	if(item.vip == 1 || item.freeVisit == 1){
+                    		var endTime = null;
+                    		if(item.vip == 1 && item.freeVisit == 1){
+	                    		 endTime = item.freeEndTime > item.vipEndtime?item.freeEndTime:item.vipEndtime;
+                    		}else if(item.vip == 1){
+                    			endTime = item.vipEndtime;
+                    		}else{
+                    			endTime = item.freeEndTime;
+                    		}
+                    		console.log(endTime);
+                    		var freeEndTime = (endTime != null) ? "(至"+util.toDateString(endTime,"yyyy-MM-dd")+")":"";
+                    		return "<div style='color:green'>免费"+freeEndTime+"</div>";
+                    	}else{        	
+	                    	return "<a style='color:red'>收费</a>";          	
+                    	}
+                    }
+                },{
+                    field: 'totalReadNumber',
+                    align:"center",
+                    title: '总查询次数',  
+                    templet:function(item){
+	                   /*  if(item.freeVisit == 1){
+	                		return "-";
+	                	}else{
+	                		return item.totalReadNumber || 0;
+	                	} */
+                    	return item.totalReadNumber || 0;
+                    }
+                },{
+                    field: 'usedReadNumber',
+                    align:"center",
+                    title: '已使用查询次数',  
+                    templet:function(item){
+	                    /* if(item.freeVisit == 1){
+	                		return "-";
+	                	}else{
+	                		
+	                	} */
+                    	return item.usedReadNumber || 0;
+                    }
+                },{                   
+                    title: '剩余查询次数',
+                    field: 'readNumber',
+                    align:"center",
+                    templet:function(item){
+                    	/* if(item.freeVisit == 1){
+                    		return "-";
+                    	}else{
+                    		
+                    	} */
+                    	return item.readNumber  || 0;
+                    }
+                }
+              ]
+            ],
+        });
+	  	
+	  	table.render({
+  			method: 'post',
+            // size: 'sm',                   
+            elem: '#appWrite',
+            url: "/v1/chainvisit/surplus/userFeePage", //数据接口
+            page: false, //开启分页
+            where:queryObj,
+            skin:"line",
+          
+            request: {
+                pageName: 'pagenum',
+                limitName: 'pagesize'
+            },
+            done: function(res, curr, count){
+            	count = 0;
+            },
+            cols: [
+                [{
+                     field: 'name',
+                     title: '应用名称',
+                     align:"center"               
+                 }, {
+                    field: 'code',                  
+                    title: '应用编码',
+                    align:"center"
+                }, {
+                    field: 'freeVisit',                  
+                    title: '是否收费',
+                    align:"center",
+                    templet:function(item){
+                    	if(item.vip == 1 || item.freeVisit == 1){
+                    		var endTime = null;
+                    		if(item.vip == 1 && item.freeVisit == 1){
+	                    		 endTime = item.freeEndTime > item.vipEndtime?item.freeEndTime:item.vipEndtime;
+                    		}else if(item.vip == 1){
+                    			endTime = item.vipEndtime;
+                    		}else{
+                    			endTime = item.freeEndTime;
+                    		}
+                    		console.log(endTime);
+                    		var freeEndTime = (endTime != null) ? "(至"+util.toDateString(endTime,"yyyy-MM-dd")+")":"";
+                    		return "<div style='color:green'>免费"+freeEndTime+"</div>";
+                    	}else{        	
+	                    	return "<a style='color:red'>收费</a>";          	
+                    	}
+                    }
+                },{
+                    field: 'totalWriteNumber',
+                    align:"center",
+                    title: '总上链次数', 
+                    templet:function(item){
+	                    /* if(item.freeVisit == 1){
+	                		return "-";
+	                	}else{
+	                		return item.totalWriteNumber || 0;
+	                	} */
+                    	return item.totalWriteNumber  || 0;
+                    }
+                },{
+                    field: 'usedWriteNumber',
+                    align:"center",
+                    title: '已使用上链次数',
+                    templet:function(item){
+	                   /*  if(item.freeVisit == 1){
+	                		return "-";
+	                	}else{
+	                		return item.usedWriteNumber || 0;
+	                	} */
+                    	return item.usedWriteNumber  || 0;
+                    }
+                }, {                   
+                    title: '剩余上链次数',
+                    field: 'writeNumber',
+                    align:"center",
+                    templet:function(item){
+                    	/* if(item.freeVisit == 1){
+                    		return "-";
+                    	}else{
+                    		return item.writeNumber || 0;
+                    	} */
+                    	return item.writeNumber  || 0;
+                    }
+                }
+              ]
+            ],
+        });
+
+		}
+
+   	$("#viewReadApi").on("click",function(){
+   	    layer.open({
+            title: "查看收费查询接口",
+            type: 2,
+            move: false,
+            content: "/viewAPi?type=1",
+            area: ["100%", "100%"],                
+            resize: false,
+            scrollbar: false,
+            end:function () {			     
+	         
+            }
+        });
+   	});
+   	
+   	$("#viewWriteApi").on("click",function(){
+   	    layer.open({
+            title: "查看收费上链接口",
+            type: 2,
+            move: false,
+            content: "/viewAPi?type=0",
+            area: ["100%", "100%"],                      
+            resize: false,
+            scrollbar: false,
+            end:function () {			     
+	         
+            }
+        });
+   	});
+   	
+    //用户充值记录
+    var renderBuyRecordTable = function(param){
+	  	var queryObj = {uid:userId,hidePage:true,d:new Date().getTime()};param = param || {};
+	  	for(var i in param){
+		  if(param[i]){
+			  queryObj[i] = param[i];
+		  }
+	  	}
+	  	
+	  	table.render({
+  			method: 'post',
+            // size: 'sm',
+            limit: 5,
+            elem: '#buyRecord',
+            url: "/v1/chainvisit/buyrecord/userBuyRecord", //数据接口
+            page: false, //开启分页
+            where:queryObj,
+            skin:"nob",
+          
+            request: {
+                pageName: 'pagenum',
+                limitName: 'pagesize'
+            },
+            done: function(res, curr, count){
+            	count = 0;
+            },
+            cols: [
+                [ //表头               
+               	 {
+                       field: 'appName',
+                       title: '应用名称',                       
+                       align:"center"               
+                 },{
+                     field: 'appCode',
+                     title: '应用编码',                       
+                     align:"center"               
+               },{                   
+                    title: '查询次数',
+                    field: 'readNumber',                   
+                    align:"center",
+                    templet:function(item){
+                    	if(!item.readNumber){                   		
+                    		return 0;
+                    	}
+                    	return item.readNumber;
+                    }
+                }, {                   
+                    title: '上链次数',
+                    field: 'writeNumber',
+                    align:"center",
+                    templet:function(item){
+                    	if(!item.writeNumber){
+                    		console.log(item.writeNumber);
+                    		return 0;
+                    	}
+                    	return item.writeNumber;
+                    }
+                    
+                }, {                   
+                    title: '充值类型',
+                    field: 'type',
+                    align:"center",
+                    templet:function(item){
+                    	if(item.type == 0){                   		
+                    		return "系统充值";
+                    	}else if(item.type == 1){
+                    		return "活动赠送";
+                    	}else if(item.type == 2){
+                    		return "系统赠送";
+                    	}
+                    	return "其他";
+                    }
+                    
+                },{                   
+                    title: '充值时间',
+                    field: 'createtime',
+                    align:"center",
+                    templet:function(item){
+	                    if(item.createtime)
+	                        return util.toDateString(item.createtime,"yyyy-MM-dd HH:mm:ss");
+	                    else
+	                        return "";
+	                }
+                }]
+            ],
+        });
+
+		}
+    
+    form.on('submit(app_search)', function (data) {
+   	 	console.log("app_search", data);
+         renderTable(data.field);
+        return false;
+    });
+
+
+    $("#view_more").on("click",function(){
+    	layer.open({
+            title: "购买记录",
+            type: 2,
+            move: false,
+            content: "/fee/userBuyRecordList",
+            area: ["100%", "100%"],                      
+            resize: false,
+            scrollbar: false,
+            end:function () {			     
+	         
+            }
+        });
+    });
+    
+    //操作
+    table.on('tool(applist)', function (obj) {
+   		var data = obj.data;
+    
+    });
+
+    $('.demoTable .layui-btn').on('click', function () {
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+    });
+    
+    renderTable();
+    renderBuyRecordTable();
+    
+
+});
+</script>
+</html>

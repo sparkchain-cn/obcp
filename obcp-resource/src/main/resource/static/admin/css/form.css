@@ -1,0 +1,26 @@
+.useredit-title{
+	font-size: 20px;
+	text-align: center;
+	line-height: 80px;
+	
+}
+
+
+.layui-upload-list img{
+	width: 20%;
+}
+
+.layui-btn-stop{
+	background-color: transparent;
+	color: #747474;
+}
+
+.layui-btn-stop:hover{
+	color: #708CB3;
+	text-decoration: underline;
+}
+
+
+.layui-btn-sub{
+	background-color: #4A90E2;
+}

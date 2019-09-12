@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 
-import com.sparkchain.framework.exception.BaseException;
-import com.sparkchain.framework.utils.BeanUtils;
+import cn.obcp.base.exception.BaseException;
+import cn.obcp.base.utils.BeanUtils;
 
 /**
  * @author 彭仁夔

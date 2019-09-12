@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/admin/layui/css/layui.css" media="all">
+</head>
+<script type="text/javascript" src="/admin/layui/layui.js"></script>
+<script type="text/javascript" src="./js/util.js"></script>
+<body>
+<form id="dictForm" class="layui-form layui-form-pane" action="">
+    <input type="hidden" id="id" name="id">
+    <div class="layui-form-item" >
+        <label class="layui-form-label">父级简称</label>
+        <div class="layui-input-block">
+            <input type="hidden" id="parentid" name="parentid">
+            <input type="text" id="parentName" parentId="" class="layui-input" readonly="readonly">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">*名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" id="name" lay-verify="required"  placeholder="请输入名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">*简称</label>
+        <div class="layui-input-block">
+            <input type="text" name="shortname" id="shortname" lay-verify="required"  placeholder="请输入简称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">*全称</label>
+        <div class="layui-input-block">
+            <input type="text" name="allname" id="allname" lay-verify="required"  placeholder="请输入全称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">*字典状态</label>-->
+        <!--<div class="layui-input-block">-->
+            <!--<select id="status" name="status" lay-verify="required">-->
+                <!--<option value="">-请选择-</option>-->
+                <!--<option value="0">禁用</option>-->
+                <!--<option value="1">启用</option>-->
+            <!--</select>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="layui-form-item" style="text-align: center;">
+        <a class="layui-btn" lay-submit="" lay-filter="submitBtn">保存</a>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+</form>
+</body>
+
+<script type="text/javascript">
+    layui.use(['form','jquery'], function () {
+        var form = layui.form,$=layui.jquery;
+        var init = function(){
+            var id = getUrlParam("id"),parentid=getUrlParam("parentid");
+            $.post("/v1/region/getInfo",{id:id,parentid:parentid},function(response){
+
+                if(typeof response == 'string'){
+                    response = JSON.parse(response);
+                }
+                if(response && response.code == 0){
+                    var region = response.data;
+                    if(region){
+                        $("#id").val(region.id);
+                        $("#parentid").val(region.parentid);
+                        $("#name").val(region.name);
+                        $("#shortname").val(region.shortname);
+                        $("#parentName").val(region.parentName);
+                        $("#allname").val(region.allname);
+                    }
+
+                    form.render();
+                }
+            });
+        };
+
+        form.on("submit(submitBtn)",function(data){
+            var loading = layer.load(1);
+            var region = data.field,url="/v1/region/saveRegion";
+            console.log(region)
+            $.post(url,region,function(response){
+                if(response){
+                    layer.close(loading);
+                    console.log(response)
+                    if(response.code == "0"){
+
+                        layer.msg("保存成功！", {
+                            icon: 6,
+                            time: 1000
+                        }, function() {
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        });
+                    }else{
+                        layer.msg(response.message, {
+                            icon: 5,
+                            time: 2000
+                        });
+                    }
+                }
+
+            });
+        });
+
+
+        init();
+
+    });
+</script>
+</html>

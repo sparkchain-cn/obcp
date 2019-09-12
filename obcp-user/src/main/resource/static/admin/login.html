@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>火花区块链接入平台</title>
+	<link rel="stylesheet" href="/admin/layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="/admin/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="/css/intival.css" />
+	<link rel="stylesheet" href="/css/login.css">
+	<script type="text/javascript" src="/js/checkBrowser.js"></script>
+	<script type="text/javascript" src="/js/jsencrypt.min.js"></script>
+	<script type="text/javascript" src="/admin/layui/layui.js"></script>
+</head>
+<body class="login_body">
+<div class="bg_img">
+	<img src="/images/bg.png" alt="">
+</div>
+<section class="login-main layui-col-xs5 layui-col-sm5 layui-col-md4">
+	<div class="layui-row">
+		<div class="layui-form">
+			<div class="capc-logo">
+				<!--<img src="/images/logo-1.png" class="capc-logo-img"/>-->
+			</div>
+			<div class="layui-form-item login_item">
+				<label class="layui-form-icon"><i class="layui-icon">&#xe678;</i><span></span></label>
+				<div class="layui-input-block item_block">
+					<input type="text" name="loginName" required lay-verify="required" placeholder="请输入手机号码"
+						   class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item login_item">
+				<label class="layui-form-icon"><i class="layui-icon">&#xe673;</i><span></span></label>
+				<div class="layui-input-block item_block">
+					<input type="password" name="password" required lay-verify="required" placeholder="请输入密码"
+						   class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block layui-input-other">
+   					<a href="/signup" id="register">注册</a>
+					<a href="/forgetPwd" class="forget-pass">忘记密码</a>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<button class="layui-btn layui-btn-login" style="float:left" lay-submit id="loginBtn" lay-filter="loginBtn">登录</button>
+			</div>
+		</div>
+	</div>
+</section>
+<div class="footer copyright">
+	COPYRIGHT@版权所有烨链(上海)科技有限公司沪ICP备17052131号
+</div>
+</body>
+<script>
+    //Demo
+    if(window !=top){
+        top.location.href=location.href;
+    }
+   
+    layui.use(['form',"jquery","layer","table"], function() {
+        var form = layui.form,
+        	layer = layui.layer,
+        	table = layui.table,
+            $ = layui.jquery;
+		var key = "${key}";
+        var browser = getBrowserVersion();
+        // browser.ie && browser.version < 10
+        if(!browser.webkit){
+        	$(".browserTip").show();
+        }
+         form.verify({
+        	 require: function(value, item){ //value：表单的值、item：表单的DOM对象
+        		
+            if(!value || value == ""){
+              return '手机号不能为空';
+            }
+          },
+      	 pass: function(value, item){ //value：表单的值、item：表单的DOM对象
+		    		 var regex = /^1[3|4|5|6|7|8|9]\d{9}$/;
+		        if(!value || value == ""){
+		          return '密码不能为空';
+		        }
+		      }
+         
+        }); 
+         
+        $(document).keydown(function (e) {
+        	 if (e.keyCode === 13) {
+        	 	$("#formDemo").trigger("click");
+        	 }
+         });
+
+        //监听提交
+        form.on('submit(loginBtn)', function(data) {
+            //	    layer.msg(JSON.stringify(data.field));
+            var encrypt = new JSEncrypt();
+            encrypt.setPublicKey(key);
+            /*data.field.password = encrypt.encrypt(data.field.password);//.replace(/\+/g, '%2B');
+            data.field.loginName = encrypt.encrypt(data.field.loginName);*/
+
+			if (!data.field.loginName){
+			    layer.msg("登录名不能为空！");
+			}
+            data.field.loginName = data.field.loginName.trim();
+            if (!data.field.password){
+                layer.msg("密码不能为空！");
+            }
+            data.field.password = data.field.password.trim();
+
+            console.log(JSON.stringify(data.field));
+            var params = encrypt.encrypt(JSON.stringify(data.field));
+            $.post('/v1/userextend/login', {params:params}, function(json) {
+                if(json.code == 200) {
+                    window.location.href = "/index";
+
+                } else {
+                	layer.msg(json.message || json.msg, {
+                		icon: 5,
+    		            time: 2000
+    		          });
+                    //layer.msg();
+                }
+            }, 'json').error(function(){
+            	layer.msg("服务端异常",{icon:5});
+            });
+            return false;
+        });
+    });
+
+  
+</script>
+
+</html>

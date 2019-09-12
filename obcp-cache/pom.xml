@@ -9,11 +9,9 @@
 		<artifactId>obcp</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>cn.obcp</groupId>
 	<artifactId>obcp-cache</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>obcp-cache</name>
-	<url>http://maven.apache.org</url>
+	
 	<dependencies>
 
 	</dependencies>

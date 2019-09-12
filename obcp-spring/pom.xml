@@ -41,8 +41,8 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.sparkchain</groupId>
-			<artifactId>spc-framework-base</artifactId>
+			<groupId>cn.obcp</groupId>
+			<artifactId>obcp-utils</artifactId>
 			<version>${framework.version}</version>
 		</dependency>
 		<dependency>

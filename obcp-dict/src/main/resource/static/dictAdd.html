@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" href="/admin/layui/css/layui.css" media="all">
+</head>
+<script type="text/javascript" src="/admin/layui/layui.js"></script>
+<script type="text/javascript" src="/js/util.js"></script>
+<body>
+<div class="layui-row layui-fluid layui-bg-white">
+<div class="layui-row " style="width: 750px; margin-top: 20px;">
+	<form id="dictForm" class="layui-form layui-form-pane" >
+		<div class="layui-form-item">
+			<label class="layui-form-label">父级字典</label>
+			<div class="layui-input-block">
+				<input type="hidden" id="parent" name="parent"> 
+				<input type="text" id="parentName" class="layui-input"
+					readonly="readonly">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">*字典名称</label>
+			<div class="layui-input-block">
+				<input type="text" name="name" id="name" lay-verify="required"
+					placeholder="请输入" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">*字典编码</label>
+			<div class="layui-input-block">
+				<input type="text" name="code" id="code" lay-verify="required"
+					placeholder="请输入" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">字典值</label>
+			<div class="layui-input-block">
+				<input type="text" name="vals" id="vals" placeholder="请输入" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">字典描述</label>
+			<div class="layui-input-block">
+				<textarea id="remarks" name="remarks" placeholder="请输入字典描述" class="layui-textarea"></textarea>
+			</div>
+		</div>
+
+		<!-- <div class="layui-form-item">
+			<label class="layui-form-label">*字典状态</label>
+			<div class="layui-input-block">
+				<input type="radio" name="status" value="0" title="禁用"> <input
+					type="radio" name="status" value="1" title="启用" checked>
+			</div>
+		</div> -->
+		<div class="layui-form-item" style="text-align: center;">
+			<a class="layui-btn" lay-submit="" lay-filter="submitBtn">保存</a>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		</div>
+	</form>
+	</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	layui.use([ 'form', 'jquery' ], function() {
+		var form = layui.form, $ = layui.jquery;
+		var oldcode = getUrlParam("code"), parentId = getUrlParam("parent");
+		var init = function() {
+			if(parent){
+			 $("#parent").val(parentId);
+			}
+			if(oldcode){
+				$.post("/v1/dict/getInfo", {
+					code : oldcode,
+					parent : parentId
+				}, function(response) {
+
+					if (typeof response == 'string') {
+						response = JSON.parse(response);
+					}
+					if (response && response.code == 0) {
+						var dict = response.data;
+						if (dict) {
+							$("#code").attr("readonly","readonly");
+							$("#code").val(dict.code);
+							$("#parent").val(dict.parent);
+							$("#parentName").val(dict.parentName);
+							$("#parent").val(dict.parent);
+							$("#name").val(dict.name);
+							$("#vals").val(dict.vals);
+							$("#remarks").text(dict.remarks);
+						}
+
+						form.render();
+					}
+				});
+			}
+			
+		};
+
+		form.on("submit(submitBtn)", function(data) {
+			var loading = layer.load(1);
+			var dict = data.field, url = "/v1/dict/saveDict";
+			if(oldcode){
+				url = "/v1/dict/updateDict"
+			}
+			$.post(url, dict, function(response) {
+				if (response) {
+					layer.close(loading);
+					if (response.code == 0) {
+						layer.msg("保存成功！", {icon : 6,time : 1000},function() {
+							parent.reflushByNodeId();
+				            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+				            parent.layer.close(index); //再执行关闭
+						});
+					} else {
+						layer.msg(response.message, {icon : 5,time : 2000});
+					}
+				}
+
+			});
+		});
+
+		init();
+
+	});
+</script>
+</html>

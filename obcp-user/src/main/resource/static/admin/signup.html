@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>火花区块链接入平台-注册</title>
+<link rel="stylesheet" href="/admin/layui/css/layui.css">
+<link rel="stylesheet" type="text/css" href="/admin/css/main.css" />
+<link rel="stylesheet" type="text/css" href="/css/intival.css" />
+<link rel="stylesheet" href="/css/login.css">
+<script type="text/javascript" src="/js/checkBrowser.js"></script>
+<script type="text/javascript" src="/js/jsencrypt.min.js"></script>
+<script src="/admin/layui/layui.js"></script>
+</head>
+<body class="login_body">
+	<div class="bg_img">
+		<img src="/images/bg.png" alt="">
+	</div>
+	<section class="login-main layui-col-md5" style="top:20%">
+		<div class="layui-row">
+			<div class="layui-form">
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label" style="width: 85px">手机号码：</label>
+					<div class="layui-input-block">
+						<input class="layui-input" name="mobile" placeholder="手机号码"
+							lay-verify="require|phone" type="text" autocomplete="off">
+					</div>
+				</div>
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label" style="width: 85px">短信验证码：</label>
+					<div class="layui-input-block">
+						<input type="text" name="validateCode"
+							class="layui-input layui-col-xs6" style="width: 50%;"
+							lay-verify="requireMsgCode|number" placeholder="请输入短信验证码"
+							autocomplete="off">
+						<button class="layui-btn layui-btn-normal" style="margin: 0px 10px; " id="btnSendCode"
+							>发送</button>
+					</div>
+				</div>
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label" style="width: 85px">昵称：</label>
+					<div class="layui-input-block">
+						<input class="layui-input" name="nickname" placeholder="昵称"
+							lay-verify="username" type="text" autocomplete="new-nickname">
+					</div>
+				</div>
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label" style="width: 85px">密码：</label>
+					<div class="layui-input-block">
+						<input class="layui-input" name="password"
+							placeholder="请输入6-18位，且包含大小写英文字母和数字" lay-verify="passwords"
+							type="password" autocomplete="new-password">
+					</div>
+				</div>
+				<div class="layui-form-item" style="margin-top: 20px;">
+					<label class="layui-form-label" style="width: 85px">确认密码：</label>
+					<div class="layui-input-block">
+						<input class="layui-input" name="confirmPassword"
+							placeholder="请输入6-18位，且包含大小写英文字母和数字" lay-verify="confirmPassword"
+							type="password" autocomplete="off">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-row" style="margin-top: 30px;">
+						<div class=" layui-col-xs4 layui-col-xs-offset3">
+							<button
+								class="layui-btn ayui-btn-lg layui-col-xs6 layui-btn-normal"
+								lay-submit lay-filter="signup" style="width: 90%">注册</button>
+						</div>
+						<div class=" layui-col-xs4" >
+							<button class="layui-btn ayui-btn-lg layui-col-xs6"
+								style="width: 90%" onclick="window.location.href='/login'">返回</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="footer copyright">
+		COPYRIGHT@版权所有烨链(上海)科技有限公司沪ICP备17052131号</div>
+</body>
+<script type="text/javascript" src="/js/user/signup.js"></script>
+<script>
+	if (window != top) {
+		top.location.href = location.href;
+	}
+</script>
+
+</html>

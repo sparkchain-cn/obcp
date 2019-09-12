@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组织机构列表</title>
+    <link rel="stylesheet" href="/admin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/admin/layui/css/xTree.css" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-fluid">
+            <div class="layui-card">
+                <div
+                        class="layui-form layui-card-header layuiadmin-card-header-auto"
+                        style="padding: 20px 0">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">名称:</label>
+                            <div class="layui-input-block">
+                                <input type="text" id="name" lay-verify="required"
+                                       placeholder="请输入组织机构名称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">编码:</label>
+                            <div class="layui-input-block">
+                                <input type="text" id="code"  placeholder="请输入组织机构编码"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button class="layui-btn layui-btn-normal" id="searchBtn"
+                                    data-type="getInfo">
+                                <i class="layui-icon ">&#xe615;</i> 搜索
+                            </button>
+                            <button class="layui-btn layui-btn-normal" data-type="add"
+                                    id="addBtn">添加</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-card-body">
+                    <table id="role" lay-filter="role"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="tableOptions">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs" lay-event="departmentList">查看部门</a>
+    <a class="layui-btn layui-btn-xs" lay-event="orgManagerList">机构管理员</a>
+<!--    <a class="layui-btn layui-btn-xs" lay-event="bindResource">绑定资源</a>-->
+<!--    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+</script>
+<script src="/encryptKey/rsaprivatekey.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/jsrsasign-all-min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/token.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="/admin/layui/layui.js"></script>
+<script type="text/javascript" src="/admin/layui/xTree.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+
+<script>
+    layui.use(['form','table','jquery','util'], function () {
+        var form = layui.form,table = layui.table,$=layui.jquery,util=layui.util,tableRender,curr=1,queryObj={},count = 0,limit = 10;
+
+        tableRender = table.render({
+            elem: '#role'
+            ,method:"post"
+            ,url:'/v1/org/orgList'
+            ,where:queryObj
+            ,page:1
+            ,limit:limit
+            ,loading:true
+            ,request: {
+                pageName: 'pagenum',
+                limitName: 'pagesize'
+            }
+            ,done:function(res, currPage, currCount){
+                count = currCount;
+                curr = currPage;
+            }
+            ,cols: [[
+                {field:'code', title: '编码',align:"center",width:"15%"}
+                ,{field:'name', title: '名称',align:"center",width:"15%"}
+                ,{field:'userName', title: '负责人',align:"center",width:"15%"}
+                ,{field:'tel', title: '电话',align:"center",width:"15%"}
+                ,{field:'createtime', title: '创建时间',align:"center", width:"15%",
+                    templet:function(item){
+                       	return (item.createtime) ? util.toDateString(item.createtime,"yyyy-MM-dd  HH:mm:ss"):"";
+                    }}
+                ,{fixed: 'right', title:'操作',width:"20%", toolbar: '#tableOptions'}
+            ]]
+        });
+
+        $("#addBtn").on("click",function(){
+            layer.open({
+                type: 2,
+                title: '新增组织机构',
+                maxmin: true,
+                resize: false,
+                area: ['50%', '65%'],
+                content: '/org/add?userId=1',
+                zIndex: layer.zIndex, //重点1,
+                end:function () {
+                    tableRender.reload({where:queryObj, page: {
+                            curr: 1
+                        }});
+                }
+            });
+        });
+
+        $("#searchBtn").on("click",function(){
+            queryObj = {};
+            var name = $("#name").val();
+            var code = $("#code").val();
+            if(name){
+                queryObj.name = name.trim();
+            }
+            if(code){
+                queryObj.code = code.trim();
+            }
+            tableRender.reload({where:queryObj, page: {
+                    curr: 1
+                }});
+        });
+
+        $("#logout").on("click",function(){
+            location.href = "/logout";
+        });
+
+        table.on('tool(role)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('是否确定删除？', function(index){
+                    $.post("/v1/role/remove",{id:data.id},function(response){
+                        if(response && response.code == 200){
+                            layer.close(index);
+                            layer.msg("删除成功！", {
+                                icon: 6,
+                                time: 1000
+                            }, function() {
+                                var totalPage = parseInt(count/limit) +1;
+                                if(parseInt(count) - 1 <= (curr - 1)*limit){
+                                    curr--;
+                                }
+                                tableRender.reload({where:queryObj, page: {
+                                        curr: curr
+                                    }});
+                            });
+
+                        }else{
+                            layer.msg(response.message || "删除失败！", {
+                                icon: 5,
+                                time: 1000
+                            })
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+            else if(obj.event === 'edit'){
+                layer.open({
+                    type: 2,
+                    title: '编辑机构信息',
+                    maxmin: true,
+                    resize: false,
+                    area: ['70%', '85%'],
+                    content: '/org/add?userId='+data.supervisor,
+                    zIndex: layer.zIndex, //重点1,
+                    end:function () {
+                        tableRender.reload({where:queryObj, page: {
+                                curr: curr
+                            }});
+                    }
+                });
+            }
+            else if(obj.event === "departmentList"){
+                createTab("机构部门信息", '/org/departments?orgId='+data.id,"deptIndex"+data.id);
+                // layer.open({
+                //     type: 2,
+                //     title: '机构部門信息',
+                //     maxmin: true,
+                //     resize: false,
+                //     area: ['60%', '70%'],
+                //     content:,
+                //     zIndex: layer.zIndex, //重点1,
+                //     end:function () {
+                //         tableRender.reload({where:queryObj, page: {
+                //                 curr: curr
+                //             }});
+                //     }
+                // });
+            }
+            else if(obj.event == "orgManagerList"){
+                createTab("机构管理员信息", '/orgManager/list?orgId='+data.id,"orgManager"+data.id);
+            }
+        });
+    });
+</script>
+</body>
+</html>

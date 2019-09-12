@@ -156,19 +156,6 @@ public class StringUtils {
 
 	public static String join(Collection cs, String sep) {
 
-		// StringBuffer sb = new StringBuffer();
-		// for (Object o : cs) {
-		//
-		// sb.append(o.toString() + sep);
-		// }
-		//
-		// if (sb.length() > 1) {
-		//
-		// sb.deleteCharAt(sb.length() - 1);
-		// }
-		//
-		// return sb.toString();
-
 		return join(cs, sep, 0);
 	}
 
@@ -1307,14 +1294,6 @@ class Inflector {
 
 		return underscoredWord;
 	}
-
-	// public static void main(String[] args) {
-	// // utils.subStrUnCamel(entity.name,2,true)
-	//
-	// String str = "instruction/radiodialog/singleselectlist.ftl";
-	// str = afterStrSub(buildPath(str), "/", 1);
-	// System.out.println(str);
-	// }
 }
 
 // Ugh, no open structs in Java (not-natively at least).

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>用户角色资源查看</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="/admin/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="//at.alicdn.com/t/font_tnyc012u2rlwstt9.css" media="all" />
+		<link rel="stylesheet" href="/admin/css/main.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="/admin/css/form.css" />
+		<script type="text/javascript" src="/admin/layui/layui.js"></script>
+
+		<!--<script src="../../js/user/newsList.js" type="text/javascript" charset="utf-8"></script>-->
+	</head>
+ 
+	<body class="childrenBody layui-bg-gray">
+		
+
+	<div class="layui-fluid layui-bg-white">
+		<table id="test" lay-filter="test"></table>
+	</div>
+
+	</body>
+	
+	<script type="text/javascript">
+		layui.use(['table', "form", "jquery", "laytpl", "laydate", "layer", 'upload','util'], function() {
+            var table = layui.table,
+                form = layui.form,
+                laytpl = layui.laytpl,
+                laydate = layui.laydate,
+                layer = layui.layer,
+                laypage = layui.laypage,
+                upload = layui.upload,
+                $ = layui.jquery,
+            	util = layui.util,
+            	currData = {};
+        var type = "${type}";
+		var userId =  '${userId}';
+            //第一个实例
+            var tableRender = table.render({
+                method: 'post',
+                elem: '#test',
+                //url : '../../json/newsList.json',
+                url: '/v1/userextend/getRoleResourceByUser',
+                limit: 10,
+                where:{userId:userId},
+                cols: [
+                    [ //表头
+                    	  {
+                              field: 'roleName',
+                              title: '角色名称',
+                              width: '40%',
+                              align:"center"
+                          },{
+                            field: 'resourceName',
+                            title: '关联资源',
+                            width: '60%',
+                            align:"center"
+                        }                                           
+                    ]
+                ],
+                request: {
+                    pageName: 'pagenum',
+                    limitName: 'pagesize'
+                },
+                id: "demo_table",
+                page: true, //开启分页
+            });
+            
+            //监听每行设置api为收费/免费
+            
+       
+            //搜索
+           /*  $('#searchBtn').on('click', function () {
+             	var path = $("#path").val();
+            // 	var isWrite = $("#is_write").val();
+            //	var free = $("#free").val();
+             	var queryObj = {free:1,is_write:type};
+             	if(path)
+             		queryObj.path = path.trim();
+      
+             	tableRender.reload({where:queryObj,page:{curr:1}});
+            }); */
+
+        })
+	</script>
+
+</html>

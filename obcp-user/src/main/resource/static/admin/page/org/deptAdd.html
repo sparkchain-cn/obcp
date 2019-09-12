@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>添加机构</title>
+    <link rel="stylesheet" href="/admin/layui/css/layui.css" media="all">
+</head>
+<script type="text/javascript" src="/admin/layui/layui.js"></script>
+<script type="text/javascript" src="/js/user/util.js"></script>
+<body>
+<form id="roleForm" class="layui-form layui-form-pane" action=""
+      style="margin: 20px">
+    <input type="hidden" id="id" name="id">
+    <div class="layui-form-item">
+        <label class="layui-form-label">*编码：</label>
+        <div class="layui-input-block">
+            <input type="text" name="code" id="code" lay-verify="required"
+                   placeholder="请输入编码" autocomplete="off" class="layui-input"
+                   style="width: 600px">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">*名称：</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" id="name" lay-verify="required"
+                   placeholder="请输入名称" autocomplete="off" class="layui-input"
+                   style="width: 600px">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">负责人：</label>
+        <div class="layui-input-block">
+            <input type="text" name="leader" id="leader" lay-verify="required"
+                   placeholder="请输入负责人" autocomplete="off" class="layui-input"
+                   style="width: 600px">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">号码：</label>
+        <div class="layui-input-block">
+            <input type="text" name="leaderNumber" id="leaderNumber" lay-verify="required"
+                   placeholder="请输入负责人号码" autocomplete="off" class="layui-input"
+                   style="width: 600px">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型：</label>
+        <div class="layui-input-block">
+            <select name="city" lay-verify="">
+                <option value="">请选择部门类型</option>
+                <option value="010">公司部门</option>
+                <option value="021">项目组</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item" style="text-align: center;">
+        <a class="layui-btn" lay-submit="" lay-filter="submitBtn">保存</a>
+    </div>
+</form>
+</body>
+
+<script type="text/javascript">
+    layui.use(['form','jquery'], function () {
+        var form = layui.form,$=layui.jquery;
+        var id = "${id}",pid="${pid}";
+        var init = function(){
+            if(id){
+                $("#code").attr("disabled","disabled");
+                $.post("/v1/org/orgInfo",{id:id},function(response){
+                    if(typeof response == 'string'){
+                        response = JSON.parse(response);
+                    }
+                    if(response && response.code == 200){
+                        var role = response.data;
+                        if(role){
+                            $("#id").val(role.id);
+                            $("#code").val(role.code);
+                            $("#name").val(role.name);
+                            $("#userName").val(role.userName);
+                            $("#addr").val(role.addr);
+                            $("#phoneNumber").val(role.phoneNumber);
+                        }
+                        form.render();
+                    }
+                });
+            };
+        }
+
+
+
+        form.on("submit(submitBtn)",function(data){
+            var loading = layer.load(1);
+            var resource = data.field;
+            resource.pid = pid;
+            $.post("/v1/department/saveDept",resource,function(response){
+                layer.close(loading);
+                if(response){
+                    layer.close(loading);
+                    if(response.code == 200){
+                        layer.msg("保存成功！", {
+                            icon: 6,
+                            time: 1000
+                        }, function() {
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        });
+                    }else{
+                        layer.msg(response.message, {
+                            icon: 5,
+                            time: 2000
+                        });
+                    }
+                }
+
+            }).error(function () {
+                layer.close(loading);
+                console.log("error");
+            });
+        });
+
+
+        init();
+
+    });
+</script>
+</html>

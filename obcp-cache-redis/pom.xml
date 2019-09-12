@@ -9,13 +9,42 @@
 		<artifactId>obcp</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>cn.obcp</groupId>
 	<artifactId>obcp-cache-redis</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>obcp-cache-redis</name>
-	<url>http://maven.apache.org</url>
-	<dependencies>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.redisson</groupId>
+			<artifactId>redisson</artifactId>
+			<version>${redisson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<version>${spring.boot.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
+			<!--<scope>provided</scope> -->
+		</dependency>
+		<dependency>
+			<groupId>cn.obcp</groupId>
+			<artifactId>obcp-cache</artifactId>
+			<version>${framework.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>

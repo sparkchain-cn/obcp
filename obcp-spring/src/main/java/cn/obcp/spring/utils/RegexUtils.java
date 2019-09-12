@@ -5,8 +5,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.sparkchain.framework.utils.StringUtils;
-
+import cn.obcp.base.utils.StringUtils;
 import ognl.Ognl;
 
 /**

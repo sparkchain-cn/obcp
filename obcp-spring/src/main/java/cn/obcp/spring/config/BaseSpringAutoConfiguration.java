@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import cn.obcp.base.UuidCreator;
 import cn.obcp.spring.EvnService;
 import cn.obcp.spring.SpringInit;
-import cn.obcp.spring.UuidCreator;
 
 /**
  * @author 彭仁夔

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>系统邀请码</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="/admin/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" href="/admin/css/main.css" media="all"/>
+    
+    <link rel="stylesheet" href="/css/intival.css" media="all"/>
+    
+    <script type="text/javascript" src="/admin/layui/layui.js"></script>
+<body class="childrenBody layui-bg-gray">
+	<div class="layui-fluid layui-bg-white text_center">
+	  
+	  <button class="layui-btn layui-btn-lg margin_top" id= "addInvite">生成邀请码</button>
+	   <div class="layui-row row_code" style="display:none">
+	    <div class="layui-col-md4 layui-col-md-offset4">
+		    <div class="layui-card">
+	  		<div class="layui-card-header">您的邀请码为：</div>
+	  			<div class="layui-card-body">
+		  			<span class="codeView"></span>
+	  			</div>
+			</div>
+	    
+	    
+	    </div>
+	  </div>
+	  
+
+	  <div>
+        
+	  </div>
+	</div>	
+</body>
+<script>
+   
+    layui.config({
+        base: '/src/js/'
+    }).use(['jquery'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer;
+       
+        $("#addInvite").on("click",function(){
+         	$('.row_code').show();
+        	$.post('/addInviteCode',function(response){
+				if(response && response.data)
+					$(".codeView").text(response.data);
+				else
+					layer.msg("创建邀请码失败！");
+			});
+      });
+
+    });
+
+
+</script>
+
+
+</html>

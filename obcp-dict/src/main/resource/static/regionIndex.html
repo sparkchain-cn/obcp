@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="/admin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/admin/layui/css/xTree.css" media="all">
+</head>
+<body>
+<div class="layui-container" style="float: left">
+    <div class="layui-row">
+        <div class="layui-col-md3">
+            <form class="layui-form">
+                <div id="xtree" class="xtree_contianer" style="border:1px solid black;padding: 10px 0 25px 5px;"></div>
+            </form>
+        </div>
+        <div class="layui-col-md9" style="background-color:#F1F1F1">
+            <!-- <iframe id="content-frame" ></iframe> -->
+            <div class="layui-fluid">
+                <div class="layui-card">
+                    <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">简称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" id="name" placeholder="请输入简称" autocomplete="off"
+                                           class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn layuiadmin-btn-useradmin" lay-submit
+                                        lay-filter="LAY-user-front-search">
+                                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-card-body">
+                        <div style="padding-bottom: 10px;">
+                            <button class="layui-btn layuiadmin-btn-useradmin" data-type="add" id="add">添加</button>
+                        </div>
+
+                        <table id="dict" lay-filter="dict"></table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/html" id="tableOptions">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+    <script type="text/javascript" src="/admin/layui/layui.js"></script>
+    <script type="text/javascript" src="/admin/layui/xTree.js"></script>
+    <script>
+        layui.use(['form', 'table', 'jquery'], function () {
+            var form = layui.form, table = layui.table, $ = layui.jquery, node_id;
+            var xtree = new layuiXtree({ //树形菜单
+                elem: 'xtree'   //(必填)
+                , form: form     //(必填)
+                , data: "/v1/region/getAll"     //(必填)
+                , click: function (node) {
+                    node_id = node.value;
+                    if (node_id) {
+                        renderTable();
+                    }
+                }
+            });
+
+            $("#add").on("click", function () {
+                layer.open({
+                    type: 2,
+                    title: '新增区域',
+                    maxmin: true,
+                    resize: false,
+                    area: ['80%', '70%'],
+                    content: '/regionAdd.html?parentid=' + node_id,
+                    zIndex: layer.zIndex, //重点1,
+                    end: function () {
+                        if (node_id) {
+                            renderTable();
+                        }
+                    }
+                });
+            });
+
+            $(".layui-icon-search").on("click", function () {
+                if (node_id) {
+                    renderTable();
+                } else {
+                    layer.msg("请选择左侧父级资源！");
+                }
+            });
+
+            table.on('tool(region)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'del') {
+                    layer.confirm('是否确定删除？', function (index) {
+                        $.post("/v1/region/deleteRegion", {code: data.code}, function (response) {
+                            if (response && response.code == 0) {
+                                layer.close(index);
+                                layer.msg("删除成功！", {
+                                    icon: 6,
+                                    time: 1000
+                                }, function () {
+                                    renderTable();
+                                });
+
+                            }
+                        });
+                        layer.close(index);
+                    });
+                } else if (obj.event = 'edit') {
+                    layer.open({
+                        type: 2,
+                        title: '编辑区域',
+                        maxmin: true,
+                        resize: false,
+                        area: ['80%', '70%'],
+                        content: '/regionAdd.html?parentid=' + node_id + '&id=' + data.id,
+                        zIndex: layer.zIndex, //重点1,
+                        end: function () {
+                            if (node_id) {
+                                renderTable();
+                            }
+                        }
+                    });
+                }
+            });
+
+            var renderTable = function () {
+                var name = $("#name").val();
+                var tableRender = table.render({
+                    elem: '#region'
+                    , method: "post"
+                    , contentType: "application/json; charset=UTF-8"
+                    , url: '/v1/region/list'
+                    , where: {parentid: node_id, name: name}
+                    , page: 1
+                    , limit: 10
+                    , cols: [[
+                        {field: 'id', width: 200, title: 'id'}
+                        , {field: 'name', title: '名称'}
+                        , {field: 'shortname', title: '简称'}
+                        , {field: 'allname', title: '全称'}
+                        , {field: 'parentName', title: '父级区域',sort: true}
+                        , {field: 'updateTime', title: '更新名称', sort: true}
+                        , {fixed: 'right', title: '操作', toolbar: '#tableOptions'}
+                    ]]
+                    , page: true
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

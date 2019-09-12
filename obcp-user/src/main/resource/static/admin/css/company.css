@@ -1,0 +1,19 @@
+.layui-form-label{
+	width:132px;
+	padding-right:30px
+}
+
+.layui-form-title{
+	font-size: 16px;
+	font-weight: bold;
+	text-align: left
+}
+
+.layui-input-block{
+	margin-left: 177px;
+}
+
+.layui-upload-img{
+	width:163px;
+	height:106px
+}
