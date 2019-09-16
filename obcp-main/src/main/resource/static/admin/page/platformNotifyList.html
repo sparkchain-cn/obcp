@@ -140,7 +140,7 @@
                         if (item.state == "1") {
                             return "正常";
                         } else {
-                            return "已删除";
+                            return "<span style='color:red;'>已删除</span>";
                         }
                     }
                 },{
@@ -219,8 +219,24 @@
     					  }});		        	
     		        }
     			});
+            }else if (obj.event == "delete") {
+            	layer.confirm('是否确定删除？', function(index){
+			  	$.post("/v1/notify/remove",{id:data.id},function(response){
+					layer.close(index);
+					if(response && response.code == 0){
+						 layer.msg("删除成功！", {icon: 6,time: 1000 }, function() {
+							render.reload({where:queryObj, page: {
+    					   		curr: 1
+    					  	}});	
+						  });
+					}else{
+						 layer.msg(response.message, {icon: 5,time: 1000 }, function() {});
+					}
+					});
+            		
+            	});
             }
-        });
+       	});
         
         $.post("/v1/userextend/getAllUser",function(res){
     		if(res.code == "200"){

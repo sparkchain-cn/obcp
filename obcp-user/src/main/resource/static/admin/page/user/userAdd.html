@@ -25,109 +25,66 @@
 
 		<div class="layui-container">
 			<!-- <h4 class="useredit-title">用户信息修改</h4> -->
-			<div class="layui-row">
 				<form class="layui-form" action="">
 					<input type="hidden" name=id>
 					<div class="layui-form-item">
-						<label class="layui-form-label layui-form-title">*昵称：</label>
+						<label class="layui-form-label">*昵称：</label>
 						<div class="layui-input-block">
-							<input type="text" name="nickname" style="max-width: 600px" id="昵称"
+							<input type="text" name="nickname" id="昵称"
 								lay-verify="required|username" placeholder="请输入昵称"
 								autocomplete="off" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<label class="layui-form-label layui-form-title">*姓名：</label>
+						<label class="layui-form-label">*姓名：</label>
 						<div class="layui-input-block">
-							<input type="text" name="name" style="max-width: 600px" id="姓名"
+							<input type="text" name="name" id="姓名"
 								lay-verify="required|username" placeholder="请输入姓名" autocomplete="off"
 								class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<label class="layui-form-label layui-form-title">*手机号码：</label>
+						<label class="layui-form-label">*手机号码：</label>
 						<div class="layui-input-block">
-							<input type="text" name="mobile" style="max-width: 600px"
+							<input type="text" name="mobile"
 								lay-verify="required|phone" placeholder="请输入手机号码"
 								autocomplete="new-mobile" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item passwordItem">
-						<label class="layui-form-label layui-form-title">*登录密码：</label>
+						<label class="layui-form-label">*登录密码：</label>
 						<div class="layui-input-block">
-							<input type="password" name="password" style="max-width: 600px"
+							<input type="password" name="password"
 								lay-verify="required|pass" placeholder="请输入登录密码"
 								autocomplete="new-password" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item passwordItem">
-						<label class="layui-form-label layui-form-title">*确认密码：</label>
+						<label class="layui-form-label">*确认密码：</label>
 						<div class="layui-input-block">
-							<input type="password" name="confirmPassword" style="max-width: 600px"
+							<input type="password" name="confirmPassword"
 								lay-verify="required|confirmPassword" placeholder="请再次输入登录密码"
 								autocomplete="off" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<label class="layui-form-label layui-form-title">*身份证号：</label>
+						<label class="layui-form-label">身份证号：</label>
 						<div class="layui-input-block">
-							<input type="text" name="cardnum" style="max-width: 600px"
-								lay-verify="required|identity" placeholder="请输入身份证号"
+							<input type="text" name="cardnum"
+								 placeholder="请输入身份证号"
 								autocomplete="off" class="layui-input">
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<label class="layui-form-label layui-form-title">*用户类型：</label>
-						<div class="layui-input-block">
-					      <input type="radio" name="vip" value="0" title="收费用户" checked="">
-					      <input type="radio" name="vip" value="1" title="免费用户">					
-					    </div>
-					</div>
-					<div class="layui-form-item">
-						<label class="layui-form-label layui-form-title">身份证照：</label>
-							<div class="layui-upload layui-upload-idcard">
-						    <div class="layui-upload-list">
-						    <img class="layui-upload-img" src='/admin/images/Artboard_05.jpg' id="idcard">
-						     <p id="idcardText">点击上传</p>
-						     <input type="hidden" name="cardnumFrontFile">
-						  </div>
-						    <div class="layui-upload-list">
-						    <img class="layui-upload-img" src='/admin/images/Artboard_05.jpg' id="idcardBack">
-						     <p id="idcardBackText">点击上传</p>
-						     <input type="hidden" name="cardnumBackFile">
-						  </div>
-						</div>  
-						</div>  			
-					<!--<div class="layui-form-item">
-						<label class="layui-form-label layui-form-title">手持证件照：</label>
-						<div class="layui-upload layui-upload-idcard">
-						  <div class="layui-upload-list" id="demo-Idcard">
-						    <img class="layui-upload-img" src='/admin/images/Artboard_10.jpg' id="headIdCardImg" >
-						     <p id="headIdCardBtn" >点击查看示例</p>
-						     <input type="hidden"  name="cardnumHandFile">
-						    </div>
-						    
-						     <div class="layui-upload-list">
-						   		<p>上传图片内证件号、姓名等信息应确保清晰，切不可修改和覆盖。(图片不超过2M） </p>
-						   		<button type='button' class="layui-btn layui-btn-primary layui-btn-up" id="headIdCard" ><i class="layui-icon layui-icon-add-circle-fine"></i> 上传图片</button>
-						  	</div>
-						</div> 
-					</div> -->
-					<div class="layui-form-item">
+					<label class="layui-form-label"></label>
 						<div class="layui-input-block">
 							<button class="layui-btn" lay-submit="" lay-filter="formDemo">立即提交</button>
-							<!-- <button id="reset" type="reset"
-								class="layui-btn layui-btn-primary">重置</button> -->
+							<button id="reset" type="reset" class="layui-btn layui-btn-primary" style="margin-left:5em; ">重置</button>
 						</div>
 					</div>
 				</form>
-			</div>
 		</div>
 	</div>
-		<!--图片预览-->
-		<div id='prevModal'>
-			<img id='img_prev' />
-		</div>
 </body>
 
 <script>
@@ -144,28 +101,11 @@
 				$.post("/v1/userextend/getInfo", {id:id}, function(data) {
 					if(data && data.code == 200){
 						var user = data.data || {};
-						$.each(user,function(i,value){
-							if(value && i != "vip"){
-								$("input[name="+i+"]").val(value);
-							}else if(i == "vip"){
-								$("input[name="+i+"][value='"+user.vip+"']").attr("checked",  true );
-							}
-						});
 						$("[name=mobile]").attr("disabled","true");
-					 	$("[name=confirmPassword]").val(user.password);
-					 	
-					 	if(user.cardnumFrontFile)
-					 		$("#idcard").attr("src",downPath + "&id="+user.cardnumFrontFile);
-						if(user.cardnumBackFile)
-							$("#idcardBack").attr("src",downPath + "&id="+user.cardnumBackFile);
-						if(user.cardnumHandFile)
-							$("#headIdCardImg").attr("src",downPath + "&id="+user.cardnumHandFile);
-					/* 	$("[name=vip]").each(function(){						
-							if(user.vip && this.value == user.vip){
-								$(this).attr("checked","checked");
-							}
-						}); */
-						$("#officeAddr").val(user.officeAddr);
+					 	$("[name=mobile]").val(user.mobile);
+					 	$("[name=nickname]").val(user.nickname);
+					 	$("[name=name]").val(user.name);
+					 	$("[name=cardnum]").val(user.cardnum);
 						form.render();
 					}
 				});
@@ -178,13 +118,6 @@
 					      return '邮箱格式不正确';
 					    }
 					}
-				 },
-				 identity:function(value,item){
-				 	 /* if(value){
-						 if(!new RegExp("(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)").test(value)){
-						      return '身份证号格式不正确';
-						    }
-					 }  */
 				 },
 				 confirmPassword:function(value,item){
 					 var passwordText = $("[name=password]").val();
@@ -220,13 +153,6 @@
 				  //我们既支持上述函数式的方式，也支持下述数组的形式
 				  //数组的两个值分别代表：[正则匹配、匹配不符时的提示文字]
 				  ,pass: function(value,item){
-				/* 	  if(!$("input[name=id]").val()){
-						  var reg=new RegExp(/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[0-9])[a-zA-Z\d#@*&.]*$/);							
-						  if(!reg.test(value)){
-							  return "请输入6-18位，且包含大小写英文字母和数字";
-						  }		
-					  }
-					 */
 		              if (value === "")
 		                  return "密码不能为空！";
 		               var reg = new RegExp(/^(\w){6,18}$/);				  
@@ -242,28 +168,12 @@
 
 			//各种基于事件的操作，下面会有进一步介绍
 			form.on('submit(formDemo)', function(data) {
-				//var sex = $("input[name=sex]:checked").attr("value");
-				//var loading = layer.load(1);
 				var user = data.field;
-				
 				var url = "/v1/userextend/userAdd"
-				//user.sex = sex;
-				if(user.id){
-				  url = "/v1/userextend/userUpdate"
+				if(id){
+					user.id = id;
+				 	url = "/v1/userextend/userUpdate"
 				}
-				/*if(!user.cardnumFrontFile){
-					layer.msg("用户身份证正面照不能为空！",{icon:5});
-					return false;
-				}
-				if(!user.cardnumBackFile){
-					layer.msg("用户身份证反面照不能为空！",{icon:5});
-					return false;
-				}
-				if(!user.cardnumHandFile){
-					layer.msg("用户手持证件照照不能为空！",{icon:5});
-					return false;
-				}*/
-				user.vip = $("input[name=vip]:checked").val();
 				$.post(url,user,function(response){
 					//layer.close(loading);				
 					if(response){
@@ -293,143 +203,6 @@
 
 				return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
 			});
-			
-			
-			// 上传身份证
-			
-			//正面
-			  var uploadIdcard = upload.render({
-			    elem: '#idcard'
-			    ,url: uploadPath
-			    ,method:"post"
-			    ,accept:'images'
-			    ,multiple:true,
-			    contentType: false,
-		    	processData: false,
-		    	enctype:"multipart/form-data"
-			    ,acceptMime:'image/*'
-			    ,before: function(obj){
-			      //预读本地文件示例，不支持ie8
-		/* 	       obj.preview(function(index, file, result){
-			    	   var img = new Image();
-			    	   img.src = result;
-			    	   img.onload = function(){
-			    	    	if(file.size  > ){
-					       		 layer.msg("文件超出上传限制2M");
-					       		return;
-					       	}else{
-					       	 obj.upload(index, file);
-					       	}
-			    	   }
-			   
-			      });  */
-			    }
-			    ,done: function(res){
-			      //如果上传失败
-			      if(!res.success){
-			        return layer.msg('上传失败');
-			      }else{
-			    	  $("#idcard").attr("src",downPath + "&id="+res.data);
-			    	  $("[name=cardnumFrontFile]").val(res.data);
-			      }
-			      //上传成功
-			    }
-			    ,error: function(){
-			      //演示失败状态，并实现重传
-			      var demoText = $('#idcardText');
-			      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-			      demoText.find('.demo-reload').on('click', function(){
-			        uploadInst.upload();
-			      });
-			    }
-			  });
-			
-			//背面
-			  var uploadIdcardBack = upload.render({
-			    elem: '#idcardBack'
-			    ,url: uploadPath
-			    ,accept:'images'
-			    ,acceptMime:'image/*'
-			    ,before: function(obj){
-			      //预读本地文件示例，不支持ie8
-			     /*  obj.preview(function(index, file, result){
-			        $('#idcardBack').attr('src', result); //图片链接（base64）
-			      }); */
-			    }
-			    ,done: function(res){
-			      //如果上传失败
-		    	 if(!res.success){
-			        return layer.msg('上传失败');
-			      }else{
-			    	  $("#idcardBack").attr("src",downPath + "&id="+res.data);
-			    	  $("[name=cardnumBackFile]").val(res.data);
-			    	  
-			      }
-			      //上传成功
-			    }
-			    ,error: function(){
-			      //演示失败状态，并实现重传
-			      var demoText = $('#idcardBackText');
-			      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-			      demoText.find('.demo-reload').on('click', function(){
-			        uploadInst.upload();
-			      });
-			    }
-			  });
-			
-			
-			//手持
-			 var uploadIdcardHead = upload.render({
-			    elem: '#headIdCard'
-			    ,url: uploadPath
-			    ,accept:'images'
-			    ,acceptMime:'image/*'
-			    ,before: function(obj){
-			      //预读本地文件示例，不支持ie8
-			 /*      obj.preview(function(index, file, result){
-			        $('#headIdCard').attr('src', result); //图片链接（base64）
-			      }); */
-			    }
-			    ,done: function(res){
-			      //如果上传失败
-		    	 if(!res.success){
-			        return layer.msg('上传失败');
-			      }else{
-			    	  $("#headIdCardImg").attr("src",downPath + "&id="+res.data);
-			    	  $("[name=cardnumHandFile]").val(res.data);
-			 
-			/*     	  layer.photos({
-						  photos: {
-							  "title": "headIdCardImg", //相册标题
-							  "id": res.data, //相册id
-							  "start": 0, //初始显示的图片序号，默认0
-							  "data": [   //相册包含的图片，数组格式
-							    {
-							      "alt": "手持证件照",
-							      "pid": 0, //图片id
-							      "src": downPath + "&id="+res.data, //原图地址
-							      "thumb": "" //缩略图地址
-							    }
-							  ]
-						  }
-						}); */ 
-			      }
-			      //上传成功
-			    }
-			    ,error: function(){
-			     
-			      var demoText = $('#headIdCardText');
-			      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-			      demoText.find('.demo-reload').on('click', function(){
-			        uploadInst.upload();
-			      });
-			    }
-			  });
-			
-			//查看示例
-			layer.photos({
-			  photos: '#demo-Idcard'
-			}); 
 		});
 	</script>
 </html>

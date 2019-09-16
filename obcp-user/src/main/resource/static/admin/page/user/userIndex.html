@@ -14,36 +14,33 @@
 <link rel="stylesheet"
 	href="//at.alicdn.com/t/font_tnyc012u2rlwstt9.css" media="all" />
 <link rel="stylesheet" type="text/css" href="/admin/css/form.css" />
-<script type="text/javascript" src="/js/main.js"></script>
 	<#include "/common/common.html">
-<!--<script src="../../js/user/newsList.js" type="text/javascript" charset="utf-8"></script>-->
 </head>
 
-<body class="childrenBody layui-bg-gray">
-	<div class="layui-fluid layui-bg-white">
-
-		<div class="" id="search_app" class="search">
-			<div class="layui-form" action="">
+<body>
+	<div class="layui-fluid ">
+		<div id="search_app" class="search" style="padding: 20px 0">
+			<div class="layui-form layui-card-header layuiadmin-card-header-auto" >
 				<div class="layui-form-item layui-form-item1">
 				 	<div class="layui-inline">
 						
 						<label class="layui-form-label layui-form-label1">用户ID:</label>
 						<div class="layui-input-inline">
-							<input type="name" id="id" name="id" autocomplete="off"
+							<input type="text" id="id" name="id" autocomplete="off"
 								class="layui-input" placeholder="请输入用户ID">
 						</div>
 					</div> 
 					<div class="layui-inline">
 						<label class="layui-form-label layui-form-label1">手机号码:</label>
 						<div class="layui-input-inline">
-							<input type="name" id="mobile" name="mobile" autocomplete="off"
+							<input type="tel" id="mobile" name="mobile" autocomplete="off"
 								class="layui-input" placeholder="请输入手机号码">
 						</div>
 					</div>
 					<div class="layui-inline">
 						<label class="layui-form-label layui-form-label1">昵称:</label>
 						<div class="layui-input-inline">
-							<input type="name" id="nickname" name="nickname"
+							<input type="text" id="nickname" name="nickname"
 								autocomplete="off" class="layui-input" placeholder="请输入昵称">
 						</div>
 					</div>
@@ -56,44 +53,27 @@
 							id="addBtn">添加</button>
 					</div>
 				</div>
-				</form>
 
 			</div>
 		</div>
 
-		<div class="layui-fluid layui-bg-white">
+		<div class="layui-fluid ">
 			<table id="userIndex" lay-filter="userIndex"></table>
+		</div>
 		</div>
 </body>
 
-<script type="text/html" id="sexItem">
-		{{# if (d.sex == 1){ }} 男 {{# } else if(d.sex == 2){ }} 女 {{# } else { }} 你是个什么生物？ {{# } }}
-	</script>
-<script type="text/html" id="roleName">
-			
-			{{# 	if(d.roleName){ }}
-				{{#		var array = d.roleName.split(",") || [];}}
-					{{#	for(var i=0 ;i<array.length ;i++) { }}
-							 <button class="layui-btn layui-btn-primary layui-btn-xs" >{{ array[i] }}</button>
-					{{#	} }}
-			{{#	}else { }}
- 						 
-				{{# } }}
-	</script>
-
-<script type="text/html" id="state">
+	<script type="text/html" id="state">
 		{{# if (d.state == 1){}}
 		<span style="color: #FFCE4E;">正常</span>
 		{{# } else if(d.state == 2){ }}
 		<span>已禁用</span>
 		{{# } }}
 	</script>
-<!-- 	<a class="layui-btn layui-btn-xs" lay-event="bindRole">绑定角色</a>	 -->
 	<script type="text/html" id="options">
 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>	
 		<a class="layui-btn layui-btn-xs" lay-event="view">查看信息</a>	
 		<a class="layui-btn layui-btn-xs" lay-event="viewRole">查看权限</a>
-		<!--<a class="layui-btn layui-btn-xs" lay-event="createApp">创建应用</a>-->
 	</script>
 
 <script type="text/javascript">
@@ -129,24 +109,29 @@
 						title: '用户ID',
 						width: '15%',
 						align:"center"
-					},{
-                        field: 'nickname',
-                        title: '昵称',
-                        width: '15%',
-                        align:"center"
-                 	},{
+				  	},{
                         field: 'mobile',
                         title: '手机号码',
                         width: '15%',
                         align:"center"
+					},{
+                        field: 'nickname',
+                        title: '昵称',
+                        width: '10%',
+                        align:"center"
                    	}, {
 						field: 'name',
 						title: '姓名',
-						width: '15%',
+						width: '10%',
 						align:"center"
+                 	}, {
+						title: '状态',
+						width: '10%',
+						toolbar: '#state',
+						 align:"center"
 				    },{
 						field: 'createtime',
-						title: '注册时间',
+						title: '注册日期',
 						align:"center",
 						width: '15%',
 					  	templet:function(item){
@@ -177,7 +162,7 @@
 			        type: 2,
 			        title: '新增用户',			      
 			        resize: false,
-			        area: ['80%', '80%'],
+			        area: ['60%', '80%'],
 			        content: '/user/userAdd',
 			        zIndex: layer.zIndex, //重点1,
 			        end:function () {	        	
@@ -193,32 +178,16 @@
 			$('#searchBtn').on('click',function(){	
 				var id=$("#id").val(),nickname=$('#nickname').val(),mobile = $("#mobile").val();
 				queryObj= {};
-				if (id) {queryObj.id = id.trim()};
+				queryObj.id="";
+				if (id) {
+					queryObj.id = id.trim()
+				};
 				if(nickname){queryObj.nickname = nickname.trim()};		
 				if(mobile){queryObj.mobile = mobile.trim()};
-				/*if(vip && vip != "-1"){queryObj.vip = vip.trim()};*/
 				render.reload({where:queryObj,page: {
 				    curr: 1 
 				  }});	
 			 });
-			    // 点击获取数据
-			    var  active = {
-			 		getInfo: function () {
-			          tableRender();
-			        }
-			    };
-			//是否展示
-			form.on('switch(isShow)', function(data) {
-				var index = layer.msg('修改中，请稍候', {
-					icon: 16,
-					time: false,
-					shade: 0.8
-				});
-				setTimeout(function() {
-					layer.close(index);
-					layer.msg("展示状态修改成功！");
-				}, 2000);
-			})
 
 			//操作
 			table.on('tool(userIndex)', function(obj) {
@@ -229,7 +198,7 @@
 						type: 2,
 						move: false,
 						content:  '/user/userAdd?userId=' + data.id,
-						area: ["80%", "80%"],
+						area: ["60%", "80%"],
 						end: function() {
 							tableRender();				
 						},				
@@ -242,9 +211,8 @@
 						type: 2,
 						move: false,
 						content:'/user/userInfo?userId=' + data.id,
-						area: ["80%", "80%"],
+						area: ["60%", "80%"],
 						end: function() {
-								
 						},				
 						resize: false,
 						scrollbar: false,
@@ -255,20 +223,12 @@
 						type: 2,
 						move: false,
 						content:'/user/userRoleResource?userId=' + data.id,
-						area: ["80%", "80%"],
+						area: ["60%", "80%"],
 						end: function() {
 								
 						},				
 						resize: false,
 						scrollbar: false,
-					})
-				}else if(obj.event == "createApp"){
-				    layer.open({
-						title:"创建应用",
-						type:2,
-						move:false,
-						content:prePath +"/v0/appPage/createapp&appUserId="+data.id+"&appUserName="+data.nickname,
-						area:["80%","80%"]
 					})
 				}
 			});

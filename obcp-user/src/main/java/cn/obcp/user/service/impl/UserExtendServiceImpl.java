@@ -117,8 +117,6 @@ public class UserExtendServiceImpl extends BaseServiceImpl<TUserExtend, Long> im
 	public boolean save(TUserExtend userExtend)  throws NumberFormatException{
 		try {
 			Long id = uuidCreator.id();
-			String freeEndTime = redissonUtils.get(UserConstans.FREE_END_TIME);
-			//Date freeEndTimeDate = DateUtils.parseDateFormat(freeEndTime);
 			String sailt = GeneratorRandom.build();
 			Date date = Calendar.getInstance().getTime();
 			userExtend.setId(id);
@@ -128,9 +126,6 @@ public class UserExtendServiceImpl extends BaseServiceImpl<TUserExtend, Long> im
 			userExtend.setState(ResourceStateEnmu.NORMAL.getStatus());//设置默认已通過审核
 			userExtend.setOrganization(UserConstans.USER_TYPE_PERSONAL);//个人用户
 			
-			if(null != userExtend.getVip() && userExtend.getVip() > 0) { //null == userExtend.getVipEndtime()
-				userExtend.setVipEndtime(freeEndTime);//设置默认免费时长
-			}
 			TUserExtends userExtends = userExtendsService.updateByUser(userExtend); // 根据提交的用户信息，修改用户子表信息
 			userExtends.setRegisttime(date);
 			boolean extendResult = userExtendsService.save(userExtends);

@@ -590,7 +590,6 @@ public class UserExtendController<TCompanyAddVo> extends BaseController<TUserExt
 	@ApiOperation(value="个人用户编辑",notes="个人用户编辑")
 	@RequestMapping(value="userUpdate",method=RequestMethod.POST)
 	public RetData  userUpdate(TUserExtend userExtend ,BindingResult bindingResult) {
-		// TODO Auto-generated method stub
 		if(bindingResult.hasErrors()) {
 			return new VerifyException(bindingResult.getAllErrors()).getErrMsg();
 		}else {

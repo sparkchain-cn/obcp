@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <title>添加资源</title>
 <link rel="stylesheet" href="/admin/layui/css/layui.css" media="all">
-</head>
 <script type="text/javascript" src="/admin/layui/layui.js"></script>
 <script type="text/javascript" src="/js/user/util.js"></script>
+</head>
 
 <body>
-	<div class="layui-container" style="width: 760px">
+	<div class="layui-container" style="width: 80%;padding-top: 2em;padding-bottom: 2em;" >
 		<form id="resourceForm" class="layui-form" action="">
 			<input type="hidden" id="id" name="id">
 			<div class="layui-form-item ">
@@ -31,16 +31,6 @@
 			      </select>
 			    </div>
 			 </div>
-<!--			 <div class="layui-form-item">
-			    <label class="layui-form-label">*资源分组：</label>
-			    <div class="layui-input-block">
-			      <select id="resourceGroup" name="resourceGroup" lay-filter="resourceGroup" lay-verify="resGroupVerify">
-			        <option value="">-请选择-</option>		
-			        <option value="1">控制台管理系统</option>   
-			        <option value="2">APP管理端</option>
-			      </select>
-			    </div>
-			 </div>-->
 			<div class="layui-form-item">
 				<label class="layui-form-label">*资源名称：</label>
 				<div class="layui-input-block">
@@ -80,12 +70,6 @@
 						autocomplete="off" class="layui-input">
 				</div>
 			</div>
-	<!--		 <div class="layui-form-item">
-		        <label class="layui-form-label">排序号</label>
-		        <div class="layui-input-block">
-		            <input type="number" name="sortnum" id="sortnum" lay-verify="sortnum"   placeholder="请输入" autocomplete="off" class="layui-input">
-		        </div>
-		    </div>-->
 			<div class="layui-form-item">
 				<label class="layui-form-label">描述：</label>
 				<div class="layui-input-block">
@@ -96,7 +80,7 @@
 			</div>
 			<div class="layui-form-item" style="text-align: center;">
 				<a class="layui-btn" lay-submit="" lay-filter="submitBtn">保存</a>
-				<!--<button id="reset" type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+				<button id="reset" type="reset" class="layui-btn layui-btn-primary">重置</button>
 			</div>
 		</form>
 	</div>
@@ -231,6 +215,9 @@
 			var resource = data.field,url="/v1/resources/saveResource";
 			resource.resourceGroup = 1;
 			resource.parentid = $("#parentId").val();
+			if(resource.parentid == 'undefined'){
+				resource.parentid = null;
+			}
 			if(resource.id){
 				url = "/v1/resources/updateResource"
 			}

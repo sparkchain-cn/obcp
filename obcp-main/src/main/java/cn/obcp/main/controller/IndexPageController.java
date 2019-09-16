@@ -15,6 +15,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.alibaba.fastjson.JSONArray;
 
 import cn.obcp.cache.ICache;
+import cn.obcp.main.constants.MainConstants;
 import cn.obcp.main.utils.TreeUtil;
 import cn.obcp.user.VO.NavsNodeTree;
 import cn.obcp.user.VO.UserVo;
@@ -30,41 +31,6 @@ public class IndexPageController {
 	@Autowired
 	ICache redissonUtils;
 
-	@RequestMapping("login")
-	public ModelAndView login(ModelMap modelMap) {
-		Object user = SecurityUtils.getSubject().getPrincipal(); // 判断当前是否已登录，已登录直接返回主页面
-		if (null == user) {
-			modelMap.put("key", redissonUtils.get(UserConstans.RES_PUBLIC_KEY));
-			return new ModelAndView("admin/login");
-		} else {
-			return new ModelAndView(new RedirectView("index"));
-		}
-	}
-
-	@RequestMapping("logout")
-	public ModelAndView logout(ModelMap modelMap) {
-		return new ModelAndView("admin/login");
-	}
-
-	// 修改密码
-	@RequestMapping("updatePwd")
-	public ModelAndView updatePwd(ModelMap modelMap) {
-		modelMap.put("key", redissonUtils.get(UserConstans.RES_PUBLIC_KEY));
-		return new ModelAndView("admin/updatePwd");
-	}
-
-	// 忘记密码
-	@RequestMapping("forgetPwd")
-	public ModelAndView forgetPwd(ModelMap modelMap) {
-		modelMap.put("key", redissonUtils.get(UserConstans.RES_PUBLIC_KEY));
-		return new ModelAndView("admin/forgetPwd");
-	}
-
-	// 注册
-	@RequestMapping("signup")
-	public ModelAndView signup(ModelMap modelMap) {
-		return new ModelAndView("admin/signup");
-	}
 
 	/* @PageRegister(path = "index", type = 3, demo = "主页面") */
 	@RequestMapping("index")
@@ -116,4 +82,5 @@ public class IndexPageController {
 	public ModelAndView clientNotifyList(ModelMap modelMap) {
 		return new ModelAndView("admin/page/clientNotifyList");
 	}
+	
 }

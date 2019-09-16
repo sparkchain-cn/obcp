@@ -53,7 +53,7 @@ public class PlatformNotifyController extends BaseController<TPlatformNotify, Lo
 	}
 	
 	@ApiOperation("获取平台通知列表")
-	@RequestMapping(value = "saveNotify", method = { RequestMethod.POST, RequestMethod.GET })
+	@RequestMapping(value = "saveNotify", method = RequestMethod.POST)
 	public LayUiRetData saveNotify(TPlatformNotify params) {
 		boolean result = false;
 		params.setUpdatetime(new Date());
@@ -73,6 +73,18 @@ public class PlatformNotifyController extends BaseController<TPlatformNotify, Lo
 			result = platformNotifyService.update(params);
 		}
 		return result ? LayUiRetData.success("保存成功!"):LayUiRetData.error("保存失败!");
+	}
+	
+	@RequestMapping(value = "remove", method = RequestMethod.POST)
+	public LayUiRetData remove(@RequestParam(required=true) Long id) {
+		boolean result = false;
+			TPlatformNotify notify = platformNotifyService.findById(id);
+			if(notify == null) {
+				return LayUiRetData.error("数据不存在!");
+			}
+			notify.setState(-1);
+			result = platformNotifyService.update(notify);
+		return result ? LayUiRetData.success("删除成功!"):LayUiRetData.error("删除失败!");
 	}
 	
 	@ApiOperation("获取平台通知列表")

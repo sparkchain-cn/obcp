@@ -64,7 +64,6 @@ public class ResourcesController extends BaseController<TResources, Long> {
 	@Autowired
 	private ResourcesService resourcesService;
 
-	/* @Value("${com.sparkchain.sysAdmin.roleId}") */
 	@Autowired
 	private RoleService roleService;
 

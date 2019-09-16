@@ -41,7 +41,6 @@ public class ConfigController extends BaseController<TConfig, Long> {
 	@Override
 	public void setEntityService(@Qualifier("bsConfigService") BaseService<TConfig, Long> entityService) {
 		this.entityService = entityService;
-
 	}
 
 	@ApiOperation("系统配置列表")

@@ -15,8 +15,6 @@
 		<link rel="stylesheet" href="/admin/css/main.css" media="all" />
 		<link rel="stylesheet" type="text/css" href="/admin/css/form.css" />
 		<script type="text/javascript" src="/admin/layui/layui.js"></script>
-
-		<!--<script src="../../js/user/newsList.js" type="text/javascript" charset="utf-8"></script>-->
 	</head>
  
 	<body class="childrenBody layui-bg-gray">
@@ -46,7 +44,6 @@
             var tableRender = table.render({
                 method: 'post',
                 elem: '#test',
-                //url : '../../json/newsList.json',
                 url: '/v1/userextend/getRoleResourceByUser',
                 limit: 10,
                 where:{userId:userId},
@@ -74,20 +71,6 @@
             });
             
             //监听每行设置api为收费/免费
-            
-       
-            //搜索
-           /*  $('#searchBtn').on('click', function () {
-             	var path = $("#path").val();
-            // 	var isWrite = $("#is_write").val();
-            //	var free = $("#free").val();
-             	var queryObj = {free:1,is_write:type};
-             	if(path)
-             		queryObj.path = path.trim();
-      
-             	tableRender.reload({where:queryObj,page:{curr:1}});
-            }); */
-
         })
 	</script>
 

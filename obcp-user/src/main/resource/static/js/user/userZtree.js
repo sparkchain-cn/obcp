@@ -5,12 +5,11 @@ var rMenu = $("#rMenu");
  */
 $(document).ready(function () {
     var time = new Date().getTime();
-    var token = generateToken({d:time});
     var setting = {
         async:{
             enable: true,
             url:"/v1/resources/treeList",
-            otherParam:{d:time,signature:token},
+            otherParam:{d:time},
             dataType:"json",
             dataFilter: filter
         },
@@ -28,12 +27,13 @@ $(document).ready(function () {
             onDrop:onDrop,
             onRightClick:onRightClick,
             onClick:function (event, treeId, treeNode) {
-                console.log(treeNode);
                 node = treeNode;
                 node_id = treeNode.id;
+                if(treeNode.id == undefined){
+                	node_id ="";
+                }
                 zTreeObj.expandNode(node,!node.open,false,true);
                 if (tableRender){
-                    node_id = treeNode.id
                     tableRender.reload({where:{parentid:node_id}, page: {
                             curr: 1
                         }})

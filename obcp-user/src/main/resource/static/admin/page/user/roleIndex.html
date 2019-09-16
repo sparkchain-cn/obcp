@@ -36,9 +36,7 @@
 									data-type="getInfo">
 									<i class="layui-icon ">&#xe615;</i> 搜索
 								</button>
-								<button class="layui-btn layui-btn-normal" data-type="add"
-									id="addBtn">添加</button>
-								<!-- 	  <a href="/logout" class="layui-btn layui-btn-normal" data-type="add" >退出登录</a> -->
+								<button style="margin-left: 5em;" class="layui-btn layui-btn-normal" data-type="add" id="addBtn">添加角色</button>
 							</div>
 						</div>
 					</div>
@@ -50,28 +48,16 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/html" id="resourceName">
-			{{# 	if(d.resourceName){ }}
-				{{#		var array = d.resourceName.split(",") || [];}}
-					{{#	for(var i=0 ;i<array.length ;i++) { }}
-							 <button class="layui-btn layui-btn-primary layui-btn-xs" >{{ array[i] }}</button>
-					{{#	} }}
-			{{#	}else { }}
- 						  
-				{{# } }}
+	<script type="text/html" id="tableOptions">
+  		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  		<a class="layui-btn layui-btn-xs" lay-event="bindRole">绑定用户</a>	
+  		<a class="layui-btn layui-btn-xs" lay-event="bindResource">绑定资源</a>	
+  		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 	</script>
-		<script type="text/html" id="tableOptions">
-  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-  <a class="layui-btn layui-btn-xs" lay-event="bindRole">绑定用户</a>	
-  <a class="layui-btn layui-btn-xs" lay-event="bindResource">绑定资源</a>	
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-</script>
-		<script src="/js/encryptKey/rsaprivatekey.js" type="text/javascript" charset="utf-8"></script>
-		<script src="/js/jsrsasign-all-min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="/js/token.js" type="text/javascript" charset="utf-8"></script>
-		<script type="text/javascript" src="/admin/layui/layui.js"></script>
-		<script type="text/javascript" src="/admin/layui/xTree.js"></script>
-		<script>
+	<script src="/js/jsrsasign-all-min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="/admin/layui/layui.js"></script>
+	<script type="text/javascript" src="/admin/layui/xTree.js"></script>
+	<script>
 	layui.use(['form','table','jquery','util'], function () {
 	   var form = layui.form,table = layui.table,$=layui.jquery,util=layui.util,tableRender,curr=1,queryObj={},count = 0,limit = 10;
      
@@ -95,7 +81,7 @@
 		    ,cols: [[
 		       {field:'code', title: '角色编码',align:"center",width:"25%"}	
 		      ,{field:'name', title: '角色名称',align:"center",width:"25%"}
-               ,{field:'updatetime', title: '更新时间',align:"center", width:"25%",
+              ,{field:'updatetime', title: '更新时间',align:"center", width:"25%",
 		          templet:function(item){
 	                    if(item.updatetime)
 	                        return util.toDateString(item.updatetime,"yyyy-MM-dd  HH:mm:ss");
@@ -112,13 +98,13 @@
 		        title: '新增角色',
 		        maxmin: true,
 		        resize: false,
-		        area: ['80%', '80%'],
+		        area: ['60%', '80%'],
 		        content: '/admin/page/user/roleAdd.html',
 		        zIndex: layer.zIndex, //重点1,
 		        end:function () {		      
-		        	   tableRender.reload({where:queryObj, page: {
-						    curr: 1
-						  }});		        	
+	        	   tableRender.reload({where:queryObj, page: {
+	        		   curr: 1
+        		   }});		        	
 		        }
 		      });
 	   });
@@ -177,7 +163,7 @@
 			        title: '编辑角色信息',
 			        maxmin: true,
 			        resize: false,
-			        area: ['80%', '80%'],
+			        area: ['60%', '80%'],
 			        content: '/admin/page/user/roleAdd.html?id='+data.id,
 			        zIndex: layer.zIndex, //重点1,
 			        end:function () {			     
@@ -192,7 +178,7 @@
 					type: 2,
 					move: false,
 					content:'/admin/page/user/bindRole.html?id=' + data.id,
-					area: ["80%", "90%"],
+					area: ["60%", "80%"],
 					end: function() {
 					    tableRender.reload({where:queryObj, page: {
 						    curr: curr
@@ -207,11 +193,9 @@
 					type: 2,
 					move: false,
 					content:'/admin/page/user/bindResource.html?id=' + data.id,
-					area: ["80%", "80%"],
+					area: ['60%', '80%'],
 					end: function() {
-					    tableRender.reload({where:queryObj, page: {
-						    curr: curr
-						  }});				
+					    tableRender.reload({where:queryObj, page: { curr: curr}});				
 					},				
 					resize: false,
 					scrollbar: false,

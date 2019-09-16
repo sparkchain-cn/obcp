@@ -48,26 +48,19 @@ div#rMenu ul li{
 						<div class="layui-form-item layui-form-item1"
 							style="padding: 20px 0 0 0">
 							<div class="layui-inline">
-								<label class="layui-form-label" style="width: 80px">资源编码:</label>
+								<label class="layui-form-label" >资源编码:</label>
 								<div class="layui-input-block">
 									<input type="text" id="code" placeholder="请输入资源编码"
 										autocomplete="off" class="layui-input">
 								</div>
 							</div>
 							<div class="layui-inline">
-								<label class="layui-form-label" style="width: 80px">资源名称:</label>
+								<label class="layui-form-label" >资源名称:</label>
 								<div class="layui-input-block">
 									<input type="text" id="name" placeholder="请输入资源名称"
 										autocomplete="off" class="layui-input">
 								</div>
 							</div>
-						<!--	<div class="layui-inline">
-								&lt;!&ndash;<label class="layui-form-label" style="width: 80px">资源名称:</label>&ndash;&gt;
-								<div class="layui-input-block ">
-									<input type="checkbox" name="" title="隐藏接口" checked>
-								</div>
-							</div>-->
-
 							<div class="layui-inline">
 								<button class="layui-btn layui-btn-normal" id="searchBtn"
 									lay-filter="LAY-user-front-search" data-type="getInfo">
@@ -114,8 +107,6 @@ div#rMenu ul li{
 	<script type="text/javascript" src="/js/zTree/jquery.ztree.exedit.min.js"></script>
 	<script type="text/javascript" src="/js/user/util.js"></script>
 	<script src="/js/jsrsasign-all-min.js"></script>
-	<script src="/js/encryptKey/rsaprivatekey.js"></script>
-	<script src="/js/token.js"></script>
 	<script type="text/javascript" src="/js/user/userZtree.js"></script>
 	<script>
 
@@ -124,7 +115,7 @@ div#rMenu ul li{
 
 		   layui.use(['form','table','jquery','util'], function () {
 		   var form = layui.form,table = layui.table,$$=layui.jquery,util=layui.util;
-		   tableRender = table.render({
+	   tableRender = table.render({
 			   elem:"#resources",
 				 method:"post"
 				,url:'/v1/resources/resourcesList'
@@ -153,30 +144,20 @@ div#rMenu ul li{
 						}else
 							return "无";
 				  }}
-				/*  ,{field:'resourceGroup', title: '资源分组',align:"center",templet:function(item){
-					  if(item.resourceGroup == 1){ //
-							return "控制台资源";
-						}else if(item.resourceGroup == 2){ //
-							return "APP管理端";
-						}else
-							return "无";
-				  }}*/
-
 				  ,{field:'path', title: '资源路径',align:"center", width:"15%"}
-                  /* ,{field:'sortnum', title: '排序号',align:"center", width:"10%"}*/
 				  ,{field:'description', title: '说明',align:"center", width:"25%"}
 				  ,{fixed: 'right', title:'操作', toolbar: '#tableOptions', width:"15%"}
 				]]
 				,page: true
-			  });
+		  });
 
-			   $$("#addBtn").on("click",function(){
+		   $$("#addBtn").on("click",function(){
 			   layer.open({
 					type: 2,
 					title: '新增资源',
 					maxmin: true,
 					resize: false,
-					area: ['90%', '100%'],
+					area: ['90%', '90%'],
 					content: '/admin/page/user/resourceAdd.html?parent_id='+node_id,
 					zIndex: layer.zIndex, //重点1,
 					end:function () {
@@ -189,7 +170,7 @@ div#rMenu ul li{
 				  });
 		   });
 
-			   $$("#searchBtn").on("click",function(){
+		   $$("#searchBtn").on("click",function(){
 				   queryObj = {};
 				   var name = $$("#name").val();
 					 var code = $$("#code").val();

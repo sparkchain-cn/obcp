@@ -125,25 +125,10 @@ public class TUserExtend extends BaseEntity implements java.io.Serializable {
 	private String rank;
 
 	@Transient
-	private String cardnumFrontFile;//
-
-	@Transient
-	private String cardnumBackFile;//
-
-	@Transient
-	private String cardnumHandFile;
-
-	// 临时字段
-
-	/*
-	 * @Transient private String companyName;
-	 */
-	@Transient
 	private String sex;
 	@Transient
 	private String region;
 	@Transient
-	@NotBlank(message = "身份证号码不能为空")
 	private String cardnum;
 	@Transient
 	private String officeMobile;
@@ -644,30 +629,6 @@ public class TUserExtend extends BaseEntity implements java.io.Serializable {
 
 	public void setCorporationcardnum(String corporationcardnum) {
 		this.corporationcardnum = corporationcardnum;
-	}
-
-	public String getCardnumFrontFile() {
-		return cardnumFrontFile;
-	}
-
-	public void setCardnumFrontFile(String cardnumFrontFile) {
-		this.cardnumFrontFile = cardnumFrontFile;
-	}
-
-	public String getCardnumBackFile() {
-		return cardnumBackFile;
-	}
-
-	public void setCardnumBackFile(String cardnumBackFile) {
-		this.cardnumBackFile = cardnumBackFile;
-	}
-
-	public String getCardnumHandFile() {
-		return cardnumHandFile;
-	}
-
-	public void setCardnumHandFile(String cardnumHandFile) {
-		this.cardnumHandFile = cardnumHandFile;
 	}
 
 	@Override

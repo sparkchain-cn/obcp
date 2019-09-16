@@ -12,57 +12,49 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="/admin/layui/css/layui.css" media="all"/>
     <link rel="stylesheet" href="/admin/css/main.css" media="all"/>
-    <link rel="stylesheet" href="/admin/fee/css/search.css" media="all"/>
     <script type="text/javascript" src="/admin/layui/layui.js"></script>
-    <script type="text/javascript" src="/admin/fee/js/jquery.min.js"></script>
-	<body class="childrenBody layui-bg-gray">
-	<div class="layui-fluid layui-bg-white">
-		<div class="layui-card">
-			<div class="layui-form height-auto layui-card-header">
-					<div class="layui-form-item layui-form-item1">
-						<div class="layui-form-item">			                               								
-                            <div class="layui-inline">
-                                 <label class="layui-form-label" style="width:auto">关键字:</label>
-                                     <div class="layui-input-block input-block1">
-                                     <input type="text" id="keyVal" name="keyVal"
-										placeholder="请输入名称或者编码" autocomplete="off" class="layui-input" >			                      
-			                        </div>	
-                              </div>						
-                            <div class="layui-inline">
-                                 <label class="layui-form-label" style="width:auto">分组:</label>
-                                     <div class="layui-input-block input-block1">
-                                     <input type="text" id="groups" name="groups"
-										placeholder="请输入分组" autocomplete="off" class="layui-input" >			                      
-			                        </div>	
-                              </div>
-						
-								<div class="layui-inline" style="line-height:40px">
-									<div class="layui-input-inline layui-input-inline-sm">
-									 <button class="layui-btn layui-btn-normal" lay-submit lay-filter="conf_search"><i
-                                         class="layui-icon ">&#xe615;</i> 搜索
-                                 	 </button>   
-                                 	</div>  
-                                 	<div class="layui-input-inline layui-input-inline-sm">
-									 <button class="layui-btn layui-btn-normal"  id="conf_add">添加
-                                 	 </button>   
-                                 	</div>                   
-								</div>
-
-                         </div>
+	<body>
+	<div class="layui-fluid ">
+		<div id="search_app" class="search" style="padding: 20px 0">
+			<div class="layui-form layui-card-header layuiadmin-card-header-auto" >
+				<div class="layui-form-item layui-form-item1">
+				 	<div class="layui-inline">
+						<label class="layui-form-label">关键字:</label>
+							<div class="layui-input-block ">
+								<input type="text" id="keyVal" name="keyVal"
+							placeholder="请输入名称或者编码" autocomplete="off" class="layui-input" >			                      
+	                       </div>	
+					</div>						
+					<div class="layui-inline">
+						<label class="layui-form-label">分组:</label>
+						<div class="layui-input-block ">
+							<input type="text" id="groups" name="groups"
+							placeholder="请输入分组" autocomplete="off" class="layui-input" >			                      
+						</div>	
 					</div>
-			</div>
-			<div class="layui-card-body">
-				<table id="applist" lay-filter="applist"></table>
-                <!--操作-->
-				 <script type="text/html" id="operate">
-    				 <a class="layui-btn  layui-btn-xs" lay-event="edit">修改</a>
-    				 <a class="layui-btn  layui-btn-xs  layui-btn-danger" lay-event="del" >删除</a>
-				 </script>			
+			
+					<div class="layui-inline" >
+						<button class="layui-btn layui-btn-normal" lay-submit lay-filter="conf_search">
+							<i class="layui-icon ">&#xe615;</i> 搜索
+                       	</button>   
+						<button class="layui-btn layui-btn-normal"  id="conf_add">添加 </button>   
+					</div>
+				</div>
 			</div>
 		</div>
+
+		<div class="layui-fluid ">
+			<table id="applist" lay-filter="applist"></table>
+		</div>
 	</div>
+	
 
 </body>
+<!--操作-->
+	<script type="text/html" id="operate">
+		<a class="layui-btn  layui-btn-xs" lay-event="edit">修改</a>
+		<a class="layui-btn  layui-btn-xs  layui-btn-danger" lay-event="del" >删除</a>
+	</script>			
   <script type="text/html" id="dateTpl">
       {{layui.util.toDateString(d.createtime,"yyyy-MM-dd HH:mm:ss")}}
   </script>
@@ -70,12 +62,10 @@
 <script>
     var userId = "${userId}";
     layui.config({
-        base: '/src/js/'
-    }).use(['jquery', 'table', 'form', 'sidebar', "laytpl", 'util', 'lodash'], function () {
+    }).use(['jquery', 'table', 'form', "laytpl", 'util'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
             table = layui.table,
-            sidebar = layui.sidebar,
             form = layui.form,
             laytpl = layui.laytpl,
             util = layui.util,tableRender,queryObj={},curr=1,count=0,limit=10;
@@ -161,7 +151,7 @@
 		        type: 2,
 		        title: '新增系统配置',
 		        resize: false,
-		        area: ['90%', '100%'],
+		        area: ['60%', '80%'],
 		        content: '/common/configAdd',
 		        zIndex: layer.zIndex, //重点1,
 		        end:function () {
@@ -184,7 +174,7 @@
 			        type: 2,
 			        title: '编辑系统配置信息',		
 			        resize: false,
-			        area: ['90%', '100%'],
+			        area: ['60%', '80%'],
 			        content: '/common/configAdd?id='+data.id,
 			        zIndex: layer.zIndex, //重点1,
 			        end:function () {			     
@@ -194,32 +184,32 @@
 			        }
 			      });
 		    }else if(obj.event == "del" ){
-		    	  layer.confirm('是否确定删除？', function(index){
-		    	        $.post("/v1/config/remove",{id:data.id},function(response){
-		    	        	if(response && response.code == 200){
-		    	        		 layer.close(index);
-		    	        		 layer.msg("删除成功！", {
-						            icon: 6,
-						            time: 1000
-						          }, function() {
-						        	    var totalPage = parseInt(count/limit) +1;
-						        	    if(parseInt(count) - 1 <= (curr - 1)*limit){
-						        	    	curr--;
-						        	    }
-						        	    tableRender.reload({where:queryObj, page: {
-						    			    curr: curr
-						    			  }});
-						          });
-		    	        		
-		    	        	}else{
-		    	        		 layer.msg(response.message || "删除失败！", {
-		 				            icon: 5,
-		 				            time: 1000
-		 				          })
-		    	        	}
-		    	        });
-		    	        layer.close(index);
-		    	      });
+	    	  layer.confirm('是否确定删除？', function(index){
+	    	        $.post("/v1/config/remove",{id:data.id},function(response){
+	    	        	if(response && response.code == 200){
+	    	        		 layer.close(index);
+	    	        		 layer.msg("删除成功！", {
+					            icon: 6,
+					            time: 1000
+					          }, function() {
+					        	    var totalPage = parseInt(count/limit) +1;
+					        	    if(parseInt(count) - 1 <= (curr - 1)*limit){
+					        	    	curr--;
+					        	    }
+					        	    tableRender.reload({where:queryObj, page: {
+					    			    curr: curr
+				    			  	}});
+					          });
+	    	        		
+	    	        	}else{
+	    	        		 layer.msg(response.message || "删除失败！", {
+	 				            icon: 5,
+	 				            time: 1000
+	 				          })
+	    	        	}
+	    	        });
+	    	        layer.close(index);
+    	      	});
 		    }
         });
     });
