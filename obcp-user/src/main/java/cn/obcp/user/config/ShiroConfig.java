@@ -50,7 +50,7 @@ import cn.obcp.user.shiro.service.ShiroLifecycleBeanPostProcessorConfig;
 
 @Configuration
 @AutoConfigureAfter(ShiroLifecycleBeanPostProcessorConfig.class)
-@Order(1)
+@Order(10)
 public class ShiroConfig {
 	
 	private static final Logger log = LoggerFactory.getLogger(ShiroConfig.class);
@@ -88,8 +88,6 @@ public class ShiroConfig {
 			filterMap.put("privateToken", getPrivateTokenFilter());
 		    filterMap.put("logoutFilter",logoutFilter());
 		    filterMap.put("read",urlPerms());
-		   // filterMap.put("userLogout", logoutUserFilter());
-		   // filterMap.put("kickout", KitcoutFilter());
 		    shiroFilterFactoryBean.setFilters(filterMap);
 			shiroFilterFactoryBean.setLoginUrl(loginUrl);
 			shiroFilterFactoryBean.setSuccessUrl(successUrl);
@@ -123,11 +121,6 @@ public class ShiroConfig {
 			List<TResources> list = resourcesService.findAll();		
 			list.forEach(r -> {
 				if(!Strings.isNullOrEmpty(r.getPath())) {
-	//				String permission = "perms[" + r.getPath()+ "]";
-//					String permission = "read";  //添加认证拦截
-//					if(!Strings.isNullOrEmpty(r.getPermissioncode())) {
-//						permission = r.getPermissioncode();
-//					}
 					filterChainDefinitionMap.put(r.getPath(),"privateToken,read,logoutFilter" );
 				}
 			});
@@ -138,21 +131,14 @@ public class ShiroConfig {
 			shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 			return shiroFilterFactoryBean;
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			log.error("shiro 配置出错");
 			return shiroFilterFactoryBean;
 		}
 	}
-/*	
-	@Bean("userLogoutFilter")
-	public LogoutUserFilter logoutUserFilter() {
-		return new LogoutUserFilter();
-	}
-	*/
+
 	/**
 	 * redis配置
-	 * TODO
 	 * @return
 	 * RedisManager
 	 * lmf 创建于2018年11月29日
@@ -186,7 +172,6 @@ public class ShiroConfig {
     
     /**
 	 * redisDao层
-	 * TODO
 	 * @return
 	 * RedisSessionDAO
 	 * lmf 创建于2018年11月29日
@@ -212,7 +197,6 @@ public class ShiroConfig {
     }
     /**
      * 设置cookie
-     * TODO
      * @return
      * SimpleCookie
      * lmf 创建于2018年11月29日
@@ -224,7 +208,6 @@ public class ShiroConfig {
     }
     /**
          *  记住登录用户
-     * TODO
      * @return
      * RememberMeManager
      * lmf 创建于2018年11月29日
@@ -257,7 +240,6 @@ public class ShiroConfig {
     
     /**
      * 设置最大出错次数
-     * TODO
      * @return
      * RetryLimitCredentialsMatcher
      * lmf 创建于2018年12月3日
@@ -297,10 +279,6 @@ public class ShiroConfig {
 	@Bean
 	public TokenRealm tokenRealm(){
 		TokenRealm realm = new TokenRealm();
-//		realm.setCachingEnabled(true); //开启缓存
-//		realm.setAuthenticationCachingEnabled(true); // 认证认证信息缓存
-//		realm.setAuthenticationCacheName("tokenAuthenticationCache");
-//		realm.setAuthorizationCacheName("tokenAuthorizationCache");
 		return realm;
 	}
 

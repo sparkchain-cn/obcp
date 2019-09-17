@@ -26,7 +26,14 @@ public interface DictMapper extends BaseMapper<TDict> {
 
 	public static String whereStr = "<where> 1= 1 "
 			+ " <if test=\"page.meta.code != null and page.meta.code != ''\"> and code = #{page.meta.code}</if>"
-			+ " <if test=\"page.meta.parent != null and page.meta.parent != '' \"> and parent = #{page.meta.parent}</if>"
+			+ " <choose>"
+			+ " <when test=\"page.meta.parent != null and page.meta.parent != ''\"> "
+			+ " and parent = #{page.meta.parent} "
+			+ " </when> "
+			+ " <otherwise>"
+			+ " and parent is null "
+			+ " </otherwise>"
+			+ " </choose>"
 			+ " <if test=\"page.meta.name != null and page.meta.name != '' \"> and name like concat('%',#{page.meta.name},'%')</if>"
 			+ " <if test=\"page.meta.vals != null and page.meta.vals != '' \"> and vals = #{page.meta.vals}</if>"
 			+ " <if test=\"page.meta.remarks != null and page.meta.remarks != '' \"> and remarks = #{page.meta.remarks}</if>"
@@ -44,7 +51,7 @@ public interface DictMapper extends BaseMapper<TDict> {
 			+ ",#{dict.status},#{dict.creator},#{dict.updater},#{dict.levecode},#{dict.createTime},#{dict.updateTime}) ")
 	int save(@Param("dict") TDict dict);
 	
-	@Select("<script>select * from sys_dict" + whereStr + "and status != -1"
+	@Select("<script>select * from sys_dict " + whereStr + "and status != -1"
 			+ "<if test=\"page.needPage ==true \"> limit #{page.startRow},#{page.size} </if>" + "</script>")
 	List<TDict> findByPage(@Param("page") Page<TDict> page);
 

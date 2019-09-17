@@ -36,7 +36,7 @@ public class ZTreeNode extends BaseTreeNode<TDict,ZTreeNode>{
                 Iterator<TDict> iterator = list.iterator();
         while(iterator.hasNext()){
             TDict resources = iterator.next();
-            if(resources.getParent().equals(parent.getId())) {//父级id等资源父级id
+            if(parent.getId().equals(resources.getParent())) {//父级id等资源父级id
                 List<ZTreeNode> childrens = parent.getChildren();
                 boolean state = resources.getStatus().equals("1");
                 List<ZTreeNode> children = new ArrayList<>();
@@ -66,9 +66,8 @@ public class ZTreeNode extends BaseTreeNode<TDict,ZTreeNode>{
     public List<ZTreeNode> bulid(List<TDict> list) {
         List<ZTreeNode> baseNode = new ArrayList<ZTreeNode>(); //父节点
         list.forEach( r -> {
-            boolean state = r.getStatus().equals("1");
             if (StringUtils.isNullOrEmpty(r.getParent())) {
-                baseNode.add(new ZTreeNode().create(r.getCode(), r.getName(), r.getParent(), false, state, new ArrayList<>()));
+                baseNode.add(new ZTreeNode().create(r.getCode(), r.getName(), r.getParent(), false, r.getStatus() == 1, new ArrayList<>()));
             }
         });  //得到全部根节点
 

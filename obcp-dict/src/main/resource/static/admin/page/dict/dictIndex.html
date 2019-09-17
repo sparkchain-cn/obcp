@@ -89,7 +89,7 @@ div#rMenu ul li{
 	<script type="text/javascript" src="/js/zTree/jquery.ztree.excheck.min.js"></script>
 	<script type="text/javascript" src="/js/zTree/jquery.ztree.exedit.min.js"></script>
 	<script type="text/javascript" src="/js/util.js"></script>
-	<script type="text/javascript" src="/js/userZtree.js"></script>
+	<script type="text/javascript" src="/js/dictZtree.js"></script>
 	<script>
 		var node,node_id,tableRender,queryObj={},curr=1,pagesize=10,count=0;
 		layui.use(['form', 'table', 'jquery' ],function() {
@@ -102,7 +102,7 @@ div#rMenu ul li{
 					maxmin : true,
 					resize : false,
 					area : [ '60%', '70%'],
-					content : '/dictAdd.html?parent='+ node_id,
+					content : '/admin/page/dict/dictAdd.html?parent='+ node_id,
 					zIndex : layer.zIndex, //重点1,
 					end : function() {
 						if(node_id){
@@ -132,7 +132,11 @@ div#rMenu ul li{
 										time : 1000
 									},
 									function() {
-										renderTable();
+										if(node_id){
+											 tableRender.reload({where:queryObj, pagenum: {
+												curr: 1
+											  }});
+										}
 									});
 
 								}
@@ -146,11 +150,13 @@ div#rMenu ul li{
 					maxmin : true,
 					resize : false,
 					area : [ '60%', '70%'],
-					content : '/dictAdd.html?code='+ data.code,
+					content : '/admin/page/dict/dictAdd.html?code='+ data.code,
 					zIndex : layer.zIndex, //重点1,
 					end : function() {
-						if (node_id) {
-							renderTable();
+						if(node_id){
+							tableRender.reload({where:queryObj, pagenum: {
+								curr: 1
+							}});
 						}
 					}
 				});

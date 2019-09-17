@@ -15,8 +15,7 @@
 			<label class="layui-form-label">父级字典</label>
 			<div class="layui-input-block">
 				<input type="hidden" id="parent" name="parent"> 
-				<input type="text" id="parentName" class="layui-input"
-					readonly="readonly">
+				<input type="text" id="parentName" lay-filter="parentName" class="layui-input">
 			</div>
 		</div>
 		<div class="layui-form-item">
@@ -46,14 +45,6 @@
 				<textarea id="remarks" name="remarks" placeholder="请输入字典描述" class="layui-textarea"></textarea>
 			</div>
 		</div>
-
-		<!-- <div class="layui-form-item">
-			<label class="layui-form-label">*字典状态</label>
-			<div class="layui-input-block">
-				<input type="radio" name="status" value="0" title="禁用"> <input
-					type="radio" name="status" value="1" title="启用" checked>
-			</div>
-		</div> -->
 		<div class="layui-form-item" style="text-align: center;">
 			<a class="layui-btn" lay-submit="" lay-filter="submitBtn">保存</a>
 			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -64,9 +55,33 @@
 </body>
 
 <script type="text/javascript">
-	layui.use([ 'form', 'jquery' ], function() {
-		var form = layui.form, $ = layui.jquery;
+	layui.config({
+		base: "../module/"
+	}).extend({
+	    treeSelect: "../../layui/lay/module/treeSelect/treeSelect"
+	}).use(['form','jquery','treeSelect'], function () {
+		var form = layui.form,$=layui.jquery,treeSelect=layui.treeSelect;
+		
 		var oldcode = getUrlParam("code"), parentId = getUrlParam("parent");
+		
+		//加载父级
+        treeSelect.render({
+            // 选择器
+            elem: '#parentName',
+            // 数据
+            type:"post",
+            data: '/v1/dict/selectTree',
+            click:function(d){
+                //console.log(d);
+                $("#parentName").val(d.current.name);
+                $("#parent").val(d.current.id);
+            },
+            success: function(d){
+            	treeSelect.refresh('parentName');
+                init();
+            }
+        });
+		
 		var init = function() {
 			if(parent){
 			 $("#parent").val(parentId);
@@ -83,10 +98,11 @@
 					if (response && response.code == 0) {
 						var dict = response.data;
 						if (dict) {
+							if (dict.parent){
+                                treeSelect.checkNode("parentName", dict.parent);
+                            }
 							$("#code").attr("readonly","readonly");
 							$("#code").val(dict.code);
-							$("#parent").val(dict.parent);
-							$("#parentName").val(dict.parentName);
 							$("#parent").val(dict.parent);
 							$("#name").val(dict.name);
 							$("#vals").val(dict.vals);
@@ -96,6 +112,10 @@
 						form.render();
 					}
 				});
+			}else if(parentId){
+                $("#parent").val(parentId);
+                treeSelect.checkNode("parentName", parentId);
+                form.render();
 			}
 			
 		};
@@ -116,14 +136,13 @@
 				            parent.layer.close(index); //再执行关闭
 						});
 					} else {
-						layer.msg(response.message, {icon : 5,time : 2000});
+						layer.msg(response.msg, {icon : 5,time : 2000});
 					}
 				}
 
 			});
 		});
 
-		init();
 
 	});
 </script>

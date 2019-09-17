@@ -27,12 +27,13 @@ $(document).ready(function () {
             onDrop:onDrop,
             onRightClick:onRightClick,
             onClick:function (event, treeId, treeNode) {
-                console.log(treeNode);
                 node = treeNode;
-                node_id = treeNode.code;
+                node_id = treeNode.id;
+                if(treeNode.id == undefined){
+                	node_id ="";
+                }
                 zTreeObj.expandNode(node,!node.open,false,true);
                 if (tableRender){
-                    node_id = treeNode.id
                     tableRender.reload({where:{parent:node_id}, page: {
                             curr: 1
                         }})

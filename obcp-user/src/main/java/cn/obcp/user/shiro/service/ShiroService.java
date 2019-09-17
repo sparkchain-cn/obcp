@@ -31,12 +31,6 @@ public class ShiroService   {
 
 	private Logger log = LoggerFactory.getLogger(ShiroService.class);
 	
-	/*@Value("${com.sparkchain.shiro.anno}")
-	private String annoPath;
-	
-	@Value("${com.sparkchain.shiro.anth}")
-	private String authPath;*/
-	
 	@Autowired
 	private ShiroFilterFactoryBean shiroFilterFactoryBean;
 	
@@ -68,7 +62,6 @@ public class ShiroService   {
 	
 	/**
 	 *  加载权限
-	 * TODO
 	 * @return
 	 * Map<String,String>
 	 * lmf 创建于2018年11月21日
@@ -115,7 +108,6 @@ public class ShiroService   {
 	
 	/**
 	 *  更新 
-	 * TODO
 	 * @param permissionFactory
 	 * void
 	 * lmf 创建于2018年11月21日

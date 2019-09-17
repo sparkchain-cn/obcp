@@ -1,5 +1,6 @@
 package cn.obcp.dict.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +26,7 @@ import cn.obcp.dict.common.Constant;
 import cn.obcp.dict.domain.TDict;
 import cn.obcp.dict.model.ZTreeNode;
 import cn.obcp.dict.service.DictService;
+import cn.obcp.dict.vo.SelectNode;
 
 
 // ##remain#import#
@@ -85,6 +88,18 @@ public class DictController extends BaseController<TDict, String> {
 
     @RequestMapping(value = "saveDict", method = RequestMethod.POST)
     public LayUiRetData saveDict(@Valid TDict tDict) {
+    	if(tDict.getCode() == null) {
+    		return LayUiRetData.error("字典编码不能为空");
+    	}else if(tDict.getName() == null) {
+    		return LayUiRetData.error("字典名称不能为空");
+    	}
+    	if(StringUtils.isNullOrEmpty(tDict.getParent())) {
+    		tDict.setParent(null);
+    	}
+    	TDict et = dictService.getDictById(tDict.getCode());
+    	if(et != null) {
+    		 return LayUiRetData.error("字典编码已存在"); 
+    	}
         String result = dictService.saveDict(tDict);
         return LayUiRetData.success(result);
     }
@@ -92,7 +107,12 @@ public class DictController extends BaseController<TDict, String> {
     @RequestMapping(value = "updateDict", method = RequestMethod.POST)
     public LayUiRetData updatDict(@Valid TDict tDict) {
     	if(tDict.getCode() == null) {
-    		return LayUiRetData.success("字典编码不能为空");
+    		return LayUiRetData.error("字典编码不能为空");
+    	}else if(tDict.getName() == null) {
+    		return LayUiRetData.error("字典名称不能为空");
+    	}
+    	if(StringUtils.isNullOrEmpty(tDict.getParent())) {
+    		tDict.setParent(null);
     	}
     	dictService.update(tDict);
         return LayUiRetData.success("");
@@ -122,4 +142,18 @@ public class DictController extends BaseController<TDict, String> {
         }
 
     }
+    
+	@PostMapping("selectTree")
+	public List<SelectNode> getSelectNodeTree() {
+		new ArrayList<>();
+		List<SelectNode> trees = new ArrayList<>();
+		try {
+			List<TDict> list = dictService.findAll();
+			trees = SelectNode.bulid(list);
+			return trees;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return trees;
+		}
+	}
 }

@@ -113,11 +113,11 @@ div#rMenu ul li{
 		   var node,node_id
 			   ,tableRender,queryObj={},curr=1,pagesize=10,count=0;
 
-		   layui.use(['form','table','jquery','util'], function () {
-		   var form = layui.form,table = layui.table,$$=layui.jquery,util=layui.util;
-	   tableRender = table.render({
-			   elem:"#resources",
-				 method:"post"
+	   layui.use(['form','table','jquery','util'], function () {
+			var form = layui.form,table = layui.table,$$=layui.jquery,util=layui.util;
+	   		tableRender = table.render({
+		   		elem:"#resources",
+				method:"post"
 				,url:'/v1/resources/resourcesList'
 				,where:queryObj
 				,pagenum:1
