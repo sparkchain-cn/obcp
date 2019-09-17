@@ -9,13 +9,20 @@
 		<artifactId>obcp</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>cn.obcp</groupId>
-	<artifactId>obcp-cache-memory</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>obcp-cache-memory</name>
-	<url>http://maven.apache.org</url>
-	<dependencies>
 
+	<artifactId>obcp-cache-memory</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>cn.obcp</groupId>
+			<artifactId>obcp-cache</artifactId>
+			<version>${framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.jodah</groupId>
+			<artifactId>expiringmap</artifactId>
+			<version>0.5.9</version>
+		</dependency>
 	</dependencies>
 
 	<build>

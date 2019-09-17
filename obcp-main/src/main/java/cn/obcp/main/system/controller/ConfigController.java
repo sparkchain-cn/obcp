@@ -17,6 +17,7 @@ import cn.obcp.base.service.BaseService;
 import cn.obcp.cache.redis.RedissonUtils;
 import cn.obcp.main.system.domain.TConfig;
 import cn.obcp.main.system.service.ConfigService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 // ##remain#import#
@@ -27,6 +28,7 @@ import io.swagger.annotations.ApiOperation;
   * 该代码通过mgicode代码生成器生成
  * </pre>
  */
+@Api(value="SYS_CONFIG")
 @RestController
 @RequestMapping("/v1/config/")
 public class ConfigController extends BaseController<TConfig, Long> {

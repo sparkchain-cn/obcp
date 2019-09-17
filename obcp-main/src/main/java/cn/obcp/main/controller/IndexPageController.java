@@ -22,9 +22,13 @@ import cn.obcp.user.VO.UserVo;
 import cn.obcp.user.common.UserConstans;
 import cn.obcp.user.domain.TUserExtend;
 import cn.obcp.user.service.UserExtendService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.models.HttpMethod;
 
 @Controller
 @RequestMapping("/")
+@Api(value="index")
 public class IndexPageController {
 	@Autowired
 	UserExtendService userExtendService;
@@ -32,7 +36,6 @@ public class IndexPageController {
 	ICache redissonUtils;
 
 
-	/* @PageRegister(path = "index", type = 3, demo = "主页面") */
 	@RequestMapping("index")
 	public ModelAndView index(ModelMap modelMap) {
 		TUserExtend user = (TUserExtend) SecurityUtils.getSubject().getPrincipal();
@@ -53,7 +56,9 @@ public class IndexPageController {
 		return new ModelAndView("admin/welcome");
 	}
 
+	
 	// 取出用户左侧菜单栏列表
+	@ApiOperation(value = "左侧菜单", notes="左侧菜单", httpMethod="POST")
 	@RequestMapping("navs")
 	@ResponseBody
 	public JSONArray getNavs() {
