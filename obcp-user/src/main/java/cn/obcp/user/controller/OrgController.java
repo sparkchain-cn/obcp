@@ -26,6 +26,7 @@ import cn.obcp.user.dto.OrgDto;
 import cn.obcp.user.enmu.StatusEnmu;
 import cn.obcp.user.service.OrgService;
 import cn.obcp.user.service.UserExtendService;
+import io.swagger.annotations.ApiOperation;
 
 // ##remain#import#
 
@@ -52,6 +53,7 @@ public class OrgController extends BaseController<TOrg, Long> {
 
 	}
 
+	@ApiOperation("机构列表")
 	@RequestMapping(value = "orgList")
 	public LayUiRetData orgList(OrgDto orgDto) {
 		try {
@@ -67,6 +69,7 @@ public class OrgController extends BaseController<TOrg, Long> {
 		}
 	}
 
+	@ApiOperation("保存机构信息(添加/修改)")
 	@RequestMapping("saveOrg")
 	public RetData saveOrg(@Valid TOrg org, BindingResult bindingResult) {
 		try {
@@ -95,6 +98,7 @@ public class OrgController extends BaseController<TOrg, Long> {
 		}
 	}
 
+	@ApiOperation("获取机构信息")
 	@RequestMapping("orgInfo")
 	public RetData orgInfo(@RequestParam Long userId) {
 		try {

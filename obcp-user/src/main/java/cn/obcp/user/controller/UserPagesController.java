@@ -1,5 +1,10 @@
 package cn.obcp.user.controller;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
+
 import cn.obcp.base.Constants;
 import cn.obcp.cache.ICache;
 import cn.obcp.user.common.UserConstans;
 import cn.obcp.user.domain.TUserExtend;
+import cn.obcp.user.domain.TUserToken;
 import cn.obcp.user.service.UserExtendService;
 
 @Controller
@@ -116,13 +125,7 @@ public class UserPagesController {
 			modelMap.put("userId", user.getId().toString());
 			modelMap.put("uploadPath", uploadPath);
 			modelMap.put("downPath", downPath);
-			/*
-			 * if (user.getOrganization() != null && user.getOrganization() ==
-			 * UserConstans.USER_TYPE_COMPANY) { return new
-			 * ModelAndView("admin/page/user/viewCompany"); } else {
-			 */
 			return new ModelAndView("admin/page/user/viewUser");
-//            }
 		}
 		modelMap.put("key", redissonUtils.get(UserConstans.RES_PUBLIC_KEY));
 		return new ModelAndView("admin/login");
@@ -140,4 +143,31 @@ public class UserPagesController {
 		return new ModelAndView("/admin/page/user/userInfo");
 	}
 
+	@RequestMapping("createPrivateToken")
+    public ModelAndView createPrivateToken(ModelMap modelMap){
+        TUserExtend u = (TUserExtend) SecurityUtils.getSubject().getPrincipal();
+        modelMap.put("nickName",u.getNickname());
+        List<TUserToken> list = Lists.newArrayList();
+        Map<?,?> map = redissonUtils.hashGet(UserConstans.USER_ACESSTOKEN_KEY+"::"+u.getId(), Map.class);
+        if (map != null) {
+            Collection<?> linkedHashMap = map.values();
+            linkedHashMap.stream().forEach(token ->{
+            	try{
+                  	list.add(JSON.parseObject(String.valueOf(token),TUserToken.class));
+              	}catch (Exception e){
+              		e.printStackTrace();
+              	};
+            });
+
+           modelMap.put("userTokens",list.stream().map((t) -> getScope(t)).collect(Collectors.toList()));
+        }
+        return new ModelAndView("admin/page/user/createPrivateToken");
+    }
+	
+	private TUserToken getScope(TUserToken userToken) {
+		if (userToken.getScope() == -1){
+           userToken.setScopeVal("用户全部权限");
+        }
+        return userToken;
+	}
 }

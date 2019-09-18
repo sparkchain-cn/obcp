@@ -75,6 +75,7 @@ public class PlatformNotifyController extends BaseController<TPlatformNotify, Lo
 		return result ? LayUiRetData.success("保存成功!"):LayUiRetData.error("保存失败!");
 	}
 	
+	@ApiOperation("删除平台通知")
 	@RequestMapping(value = "remove", method = RequestMethod.POST)
 	public LayUiRetData remove(@RequestParam(required=true) Long id) {
 		boolean result = false;

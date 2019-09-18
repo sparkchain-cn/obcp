@@ -734,24 +734,7 @@ public class UserExtendController<TCompanyAddVo> extends BaseController<TUserExt
 		}
 	}
 
-	/**
-	 * 用户选择当前APPID
-	 * @param appId
-	 * @return
-	 */
-	@RequestMapping("selectApp")
-	public RetData selectApp(@RequestParam String appId,@RequestParam String appName){
-		try {
-			TUserExtend user = (TUserExtend) SecurityUtils.getSubject().getPrincipal();
-			user.setAppid(appId);
-			user.setAppName(appName);
-			userExtendService.updateUserPrincipalCollection(user);
-			return RetData.succuess();
-		}catch (Exception e){
-			return  RetData.error("系统错误");
-		}
-	}
-	
+	@ApiOperation("获取所有用户简历信息")
 	@RequestMapping("getAllUser")
 	public RetData selectApp(@RequestParam Map<String, Object> params){
 		return RetData.succuess(userExtendService.finUserAll());

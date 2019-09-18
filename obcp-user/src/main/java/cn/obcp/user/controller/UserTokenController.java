@@ -22,6 +22,7 @@ import cn.obcp.user.domain.TUserExtend;
 import cn.obcp.user.domain.TUserToken;
 import cn.obcp.user.service.UserExtendService;
 import cn.obcp.user.service.UserTokenService;
+import io.swagger.annotations.ApiOperation;
 
 // ##remain#import#
 
@@ -48,30 +49,61 @@ public class UserTokenController extends BaseController<TUserToken, Long> {
 	@Override
 	public void setEntityService(@Qualifier("bsUserTokenService") BaseService<TUserToken, Long> entityService) {
 		this.entityService = entityService;
-
 	}
 
+	@ApiOperation("创建用户临时访问令牌")
 	@ResponseBody
 	@RequestMapping("createUserToken")
-	public RetData createUserToken(@RequestParam  String expireTimeStr,@RequestParam int scope){
+	public RetData createUserToken(@RequestParam String expireTime, @RequestParam int scope) {
 		try {
-			String tokenStr = UUID.randomUUID().toString();
-			Date expireTime = DateUtils.parseDateDayFormat(expireTimeStr);
+			String tokenStr = null;
+			Date expireTimeDate = DateUtils.parseDateDayFormat(expireTime);
 			TUserExtend userExtend = userExtendService.getCurrentUser();
-			TUserToken userToken = new TUserToken();
-			userToken.setId(uuidCreator.id());
-			userToken.setToken(tokenStr);
-			userToken.setUid(userExtend.getId());
-			userToken.setExpiretime(expireTime);
-			userToken.setScope(scope);
-			entityService.save(userToken);
-			redisUtils.hashSet(UserConstans.USER_ACESSTOKEN_KEY+"::"+userToken.getUid(), userToken.getToken(), JSON.toJSONString(userToken));
-			return RetData.succuess(tokenStr);
-		}catch (Exception e){
-			logger.error(e.getMessage(),e);
+			TUserToken userToken = userTokenService.findByUserScope(userExtend.getId(), scope);
+			if (userToken != null) {
+				return RetData.error("已存在相同接口级别token");
+			} else {
+				tokenStr = UUID.randomUUID().toString();
+
+				userToken = new TUserToken();
+				userToken.setId(uuidCreator.id());
+				userToken.setToken(tokenStr);
+				userToken.setUid(userExtend.getId());
+				userToken.setExpiretime(expireTimeDate);
+				userToken.setScope(scope);
+				entityService.save(userToken);
+				redisUtils.hashSet(UserConstans.USER_ACESSTOKEN_KEY + "::" + userToken.getUid(), userToken.getToken(),
+						JSON.toJSONString(userToken));
+				redisUtils.hashSet(UserConstans.USER_ACESSTOKEN_KEY + "::TOKEN", userToken.getToken(),
+						userToken.getUid()+"");
+				return RetData.succuess(tokenStr);
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			return RetData.error("服务端异常！");
 		}
 	}
-	// ##remain#property#
+
+	@ApiOperation("删除用户临时访问令牌")
+	@RequestMapping("delete")
+	public RetData delete(@RequestParam String token) {
+		try {
+			TUserToken userToken = userTokenService.findByToken(token);
+			TUserExtend userExtend = userExtendService.getCurrentUser();
+			if (userExtend == null) {
+				return RetData.error("token不存在");
+			}
+			if (!userExtend.getId().equals(userToken.getUid())) {
+				return RetData.error("只能删除自己的token");
+			}
+			userTokenService.delete(userToken);
+			redisUtils.hashDel(UserConstans.USER_ACESSTOKEN_KEY + "::" + userToken.getUid(), userToken.getToken());
+			redisUtils.hashDel(UserConstans.USER_ACESSTOKEN_KEY + "::TOKEN", userToken.getToken());
+			return RetData.succuess();
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return RetData.error("服务端异常！");
+		}
+	}
 
 }

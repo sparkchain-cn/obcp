@@ -23,7 +23,7 @@ public class MAPIHttpServletRequestWrapper extends HttpServletRequestWrapper {
     public MAPIHttpServletRequestWrapper(HttpServletRequest request) throws IOException {
         super(request);
         body = StreamUtil.readBytes(request.getInputStream());
-        System.out.println(new String(body));
+//        System.out.println(new String(body));
       //  body = ParamsUtil.getBodyString(request).getBytes("utf8");
     }
 

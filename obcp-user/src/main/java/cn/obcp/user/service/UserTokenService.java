@@ -28,6 +28,10 @@ public interface UserTokenService extends BaseService<TUserToken, Long> {
 
 
     TUserToken findByToken(String token);
+    
+    TUserToken findByUserScope(Long id, int scope);
+
+
 
     // ##remain#method#
 

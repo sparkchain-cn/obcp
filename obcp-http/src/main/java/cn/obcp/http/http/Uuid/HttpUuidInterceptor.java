@@ -199,7 +199,7 @@ public class HttpUuidInterceptor extends HandlerInterceptorAdapter {
 		try {
 			out = response.getWriter();
 			out.append(json);
-			System.out.println("返回的JSON字符串:" + json);
+//			System.out.println("返回的JSON字符串:" + json);
 
 		} catch (IOException e) {
 			e.printStackTrace();

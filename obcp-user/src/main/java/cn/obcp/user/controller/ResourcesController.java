@@ -334,6 +334,7 @@ public class ResourcesController extends BaseController<TResources, Long> {
 	 * @param moveType    移动类型
 	 * @return
 	 */
+	@ApiOperation("批量更新资源父级")
 	@RequestMapping("updateNodeParent")
 	public RetData updateNodeParent(@RequestParam(value = "dropNodeIds[]") String[] dropNodeIds,
 			@RequestParam(required = false) Long parentId, @RequestParam String moveType) {

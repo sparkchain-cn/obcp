@@ -44,10 +44,6 @@ public class GeneratorRandom {
 			return sb.toString();
 		}
 		
-		public static void main(String[] args) {
-			System.out.println(build());
-		}
-		
 	    public String getSailt() {
 				return sailt;
 			}

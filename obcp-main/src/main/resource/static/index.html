@@ -42,18 +42,25 @@
 						</dd>
 
 					</dl></li>
-				<li class="layui-nav-item"><a href="javascript:;"> <#if
-							user.icon> <img src=${user.icon} class="layui-nav-img">
-						<#else> <img src="/admin/images/avent.jpg"
-							class="layui-nav-img"></#if> 欢迎 <span id="user">${user.nickname}</span>
-				</a>
+				<li class="layui-nav-item"><a href="javascript:;"> 
+					<#if user.icon> 
+						<img src=${user.icon} class="layui-nav-img">
+					<#else> 
+						<img src="/admin/images/avent.jpg" class="layui-nav-img">
+					</#if> 
+					欢迎 <span id="user">${user.nickname}</span>
+					</a>
 					<dl class="layui-nav-child" style="cursor: pointer">
 						<dd>
 							<a id="userInfo"><i class="layui-icon layui-icon-username"></i>个人资料</a>
 						</dd>
 						<dd>
+							<a id="createPrivateToken"><i
+								class="layui-icon "></i>临时访问令牌</a>
+						</dd>
+						<dd>
 							<a href="/updatePwd"><i
-								class="layui-icon layui-icon-password"></i>修改密码</a>
+								class="layui-icon icon-loginout"></i>修改密码</a>
 						</dd>
 						<dd>
 							<a id="logout" href="/logout"><i
@@ -147,7 +154,7 @@
 				window.sessionStorage.removeItem("flg");
 			}
 		}
-	        
+
 		$("#clientNotify").click(function(){
         	 layer.open({
  		        type: 2,
@@ -160,6 +167,19 @@
  		        }
  		      });
         });
+		
+		$("#createPrivateToken").click(function(){
+       	 layer.open({
+		        type: 2,
+		        title: '用户临时访问令牌',
+		        area: ['60%', '50%'],
+		        content: '/createPrivateToken',
+		        zIndex: layer.zIndex,
+		        end:function () {
+		        	$(".layui-badge-dot").hide();
+		        }
+		      });
+       });
 
          
          $("#userInfo").click(function(){

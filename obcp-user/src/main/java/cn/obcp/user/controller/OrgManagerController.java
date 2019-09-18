@@ -26,6 +26,7 @@ import cn.obcp.user.service.OrgManagerService;
 import cn.obcp.user.service.OrgService;
 import cn.obcp.user.service.UserDepartmentService;
 import cn.obcp.user.service.UserExtendService;
+import io.swagger.annotations.ApiOperation;
 
 // ##remain#import#
 
@@ -61,6 +62,7 @@ public class OrgManagerController extends BaseController<TOrgManager, Long> {
 
     }
 
+    @ApiOperation("机构管理员列表")
     @RequestMapping("index")
     public LayUiRetData index(OrgManagerDto orgManagerDto){
         try {
@@ -73,6 +75,7 @@ public class OrgManagerController extends BaseController<TOrgManager, Long> {
         }
     }
 
+    @ApiOperation("添加机构管理人")
     @RequestMapping("addOrgManagerByList")
     public RetData addOrgManagerByList(@RequestParam(value = "userIds[]")  List<String> userIds,@RequestParam Long orgId){
         try{
@@ -104,6 +107,7 @@ public class OrgManagerController extends BaseController<TOrgManager, Long> {
      * @param id
      * @return
      */
+    @ApiOperation(" 移除机构管理员")
     @RequestMapping("remove")
     public RetData remove(@RequestParam Long id){
         try{

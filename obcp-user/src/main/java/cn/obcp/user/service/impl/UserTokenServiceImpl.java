@@ -59,20 +59,23 @@ public class UserTokenServiceImpl extends BaseServiceImpl<TUserToken, Long> impl
 
 	}
 
-	public RetData checkToken(TUserToken userToken){
-		if (userToken != null){
-			if (userToken.getExpiretime().getTime() > Calendar.getInstance().getTime().getTime()){
+	public RetData checkToken(TUserToken userToken) {
+		if (userToken != null) {
+			if (userToken.getExpiretime().getTime() > Calendar.getInstance().getTime().getTime()) {
 				return RetData.succuess();
-			}else {
+			} else {
 				return RetData.error("token was over time");
 			}
 		}
 		return RetData.error("invalid token");
 	}
 
-
-	public TUserToken findByToken(String token){
+	public TUserToken findByToken(String token) {
 		return userTokenMapper.findByToken(token);
+	}
+
+	public TUserToken findByUserScope(Long id, int scope) {
+		return userTokenMapper.findByUserScope(id, scope);
 	}
 
 	// ##remain#method#

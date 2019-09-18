@@ -20,6 +20,7 @@ import com.alibaba.fastjson.JSON;
 
 import cn.obcp.base.RetData;
 import cn.obcp.base.utils.StringUtils;
+import cn.obcp.cache.ICache;
 import cn.obcp.cache.redis.RedisUtils;
 import cn.obcp.user.common.UserConstans;
 import cn.obcp.user.domain.TUserToken;
@@ -31,7 +32,7 @@ public class PrivateAccessTokenFilter implements Filter {
     Logger logger = LoggerFactory.getLogger(PrivateAccessTokenFilter.class);
 
     @Autowired
-    private RedisUtils redisUtils;
+    private ICache redisUtils;
     @Autowired
     private UserExtendService userExtendService;
 
@@ -51,7 +52,8 @@ public class PrivateAccessTokenFilter implements Filter {
         if (StringUtils.isNotNullOrEmpty(privateToken)) {
             if (redisUtils != null) {
                 //从缓存读取private-token
-                String token = redisUtils.hashGet(UserConstans.USER_ACESSTOKEN_KEY, privateToken, String.class);
+            	String uid = redisUtils.hashGet(UserConstans.USER_ACESSTOKEN_KEY + "::TOKEN", privateToken, String.class);
+                String token = redisUtils.hashGet(UserConstans.USER_ACESSTOKEN_KEY + "::"+uid, privateToken, String.class);
                 if (StringUtils.isNotNullOrEmpty(token)) {
                     TUserToken userToken = JSON.parseObject(token, TUserToken.class);
                     RetData checkRes = checkToken(userToken);
@@ -64,7 +66,7 @@ public class PrivateAccessTokenFilter implements Filter {
                 }
             }
         }
-        System.out.println(((HttpServletRequest) request).getRequestURI());
+//        System.out.println(((HttpServletRequest) request).getRequestURI());
         chain.doFilter(request,response);
     }
 

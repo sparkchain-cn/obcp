@@ -67,7 +67,8 @@ public class RoleController extends BaseController<TRole, Long> {
 	 * @param roleListParamDto
 	 * @return
 	 */
-	  @RequestMapping(value="roleList",method=RequestMethod.POST)
+	@ApiOperation("管理员查看角色列表")
+	@RequestMapping(value="roleList",method=RequestMethod.POST)
 	  public LayUiRetData resourcesList(RoleListParamDto roleListParamDto) {
 		  //
 		  try {
@@ -92,6 +93,7 @@ public class RoleController extends BaseController<TRole, Long> {
  	 * @param
 	 * @return
 	 */
+	@ApiOperation("非管理员用户访问角色列表")
 	@RequestMapping(value="roleListUser",method={RequestMethod.POST,RequestMethod.GET})
 	public LayUiRetData roleListUser(RoleListParamDto roleListParamDto) {
 		//

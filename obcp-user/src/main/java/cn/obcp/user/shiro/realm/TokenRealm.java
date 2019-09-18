@@ -33,7 +33,7 @@ public class TokenRealm  extends AuthorizingRealm {
         TUserExtend user = (TUserExtend) principals.getPrimaryPrincipal();
         if (user != null && redisUtils != null){//redisUtils.hashSet(, userToken.getToken(), JSON.toJSONString(userToken));
             String userTokenStr = redisUtils.hashGet(UserConstans.USER_ACESSTOKEN_KEY,user.getUserToken().toString(),String.class);
-            System.out.println(userTokenStr);
+//            System.out.println(userTokenStr);
         }
         return null;
     }
