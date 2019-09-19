@@ -316,7 +316,6 @@ public class ResourcesServiceImpl extends BaseServiceImpl<TResources, Long> impl
 	public Page<TResources> findUserResBindByPage(Page<TResources> page) {
 		List<TResources> list = resourcesMapper.findUserResBindByPage(page);
 		list.forEach(u -> {
-			System.out.println(JSON.toJSONString(u));
 			try {
 				if (u.getHasRole() == null) {
 					u.setChecked(false);

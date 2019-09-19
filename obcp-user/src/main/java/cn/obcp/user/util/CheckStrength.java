@@ -30,8 +30,6 @@ public class CheckStrength {
 	 * lmf 创建于2018年11月30日
 	 */
     private static int checkCharacterType(char c) {
-    	System.out.println(c);
-    	
         if (c >= 48 && c <= 57) {
             return NUM;
         }

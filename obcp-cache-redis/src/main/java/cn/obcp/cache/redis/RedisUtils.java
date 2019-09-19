@@ -39,7 +39,7 @@ public class RedisUtils implements ICache{
 					WEEK_SECONDS, TimeUnit.SECONDS);
 		}
 		long endTime = System.nanoTime(); // 获取结束时间
-		System.out.println("程序运行时间： " + (endTime - startTime) + "ns");
+		
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class RedisUtils implements ICache{
 					expireTime, TimeUnit.SECONDS);
 		}
 		long endTime = System.nanoTime(); // 获取结束时间
-		System.out.println("程序运行时间： " + (endTime - startTime) + "ns");
+		
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class RedisUtils implements ICache{
 		long startTime = System.nanoTime(); // 获取开始时间
 		boolean b = redisTemplate.hasKey(key);
 		long endTime = System.nanoTime(); // 获取结束时间
-		System.out.println("程序运行时间： " + (endTime - startTime) + "ns");
+		
 		return b;
 	}
 
@@ -94,7 +94,7 @@ public class RedisUtils implements ICache{
 		}
 		T t = JSON.parseObject(s, clazz);
 		long endTime = System.nanoTime(); // 获取结束时间
-		System.out.println("程序运行时间： " + (endTime - startTime) + "ns");
+		
 		return t;
 	}
 
@@ -108,7 +108,7 @@ public class RedisUtils implements ICache{
 		long startTime = System.nanoTime(); // 获取开始时间
 		Set set = redisTemplate.keys(pattern);
 		long endTime = System.nanoTime(); // 获取结束时间
-		System.out.println("程序运行时间： " + (endTime - startTime) + "ns");
+		
 		return set;
 	}
 
@@ -211,7 +211,7 @@ public class RedisUtils implements ICache{
 			list.add(JSON.parseObject(s, clazz));
 		}
 		long endTime = System.nanoTime(); // 获取结束时间
-		System.out.println("程序运行时间： " + (endTime - startTime) + "ns");
+		
 		return list;
 	}
 
@@ -221,7 +221,7 @@ public class RedisUtils implements ICache{
 				.boundListOps(key);
 		long size = ops.size();
 		long endTime = System.nanoTime(); // 获取结束时间
-		System.out.println("程序运行时间： " + (endTime - startTime) + "ns");
+		
 		return size;
 	}
 
@@ -234,7 +234,7 @@ public class RedisUtils implements ICache{
 		operations.put(key, val);
 
 		long endTime = System.nanoTime(); // 获取结束时间
-		System.out.println("程序运行时间： " + (endTime - startTime) + "ns");
+		
 	}
 	public void hashInc(String hashKey, String key, long deta) {
 		long startTime = System.nanoTime(); // 获取开始时间
@@ -242,7 +242,7 @@ public class RedisUtils implements ICache{
 				.boundHashOps(hashKey);
 		operations.increment(key, deta);
 		long endTime = System.nanoTime(); // 获取结束时间
-		System.out.println("程序运行时间： " + (endTime - startTime) + "ns");
+		
 
 	}
 
@@ -254,7 +254,7 @@ public class RedisUtils implements ICache{
 				.boundHashOps(hashKey);
 		Map<String, T> data = operations.entries();
 		long endTime = System.nanoTime(); // 获取结束时间
-		System.out.println("程序运行时间： " + (endTime - startTime) + "ns");
+		
 		return data;
 	}
 
@@ -264,7 +264,7 @@ public class RedisUtils implements ICache{
 				.boundHashOps(hashKey);
 		Object obj = operations.get(key);
 		long endTime = System.nanoTime(); // 获取结束时间
-		System.out.println("程序运行时间： " + (endTime - startTime) + "ns");
+		
 		if (obj == null) {
 			return false;
 		}
@@ -278,7 +278,7 @@ public class RedisUtils implements ICache{
 				.boundHashOps(hashKey);
 		T obj = operations.get(key);
 		long endTime = System.nanoTime(); // 获取结束时间
-		System.out.println("程序运行时间： " + (endTime - startTime) + "ns");
+		
 		return obj;
 	}
 
@@ -288,7 +288,7 @@ public class RedisUtils implements ICache{
 				.boundHashOps(hashKey);
 		operations.delete(key);
 		long endTime = System.nanoTime(); // 获取结束时间
-		System.out.println("程序运行时间： " + (endTime - startTime) + "ns");
+		
 
 	}
 
@@ -297,7 +297,7 @@ public class RedisUtils implements ICache{
 		BoundListOperations<String, String> ops = redisTemplate
 				.boundListOps(key);
 		long endTime = System.nanoTime(); // 获取结束时间
-		System.out.println("程序运行时间： " + (endTime - startTime) + "ns");
+		
 		return ops.size();
 	}
 }

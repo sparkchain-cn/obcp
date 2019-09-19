@@ -13,10 +13,6 @@ import cn.obcp.user.service.UserExtendService;
 @Component
 public class CheckIsAdmin {
 
-    CheckIsAdmin(){
-        System.out.println("CheckIsAdmin init ing +++++++++++++++++");
-    }
-
     @Pointcut(value = "@annotation(cn.obcp.user.annotation.CheckAdmin)")
     public void annotationPointCut() {
     }

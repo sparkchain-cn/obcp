@@ -40,7 +40,6 @@ public class LogoutFilter extends AdviceFilter {
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String requrl = httpServletRequest.getRequestURL().toString();
-        System.out.println(requrl.lastIndexOf(logoutUrl));
         Subject subject = getSubject(request, response);
 
         if (requrl.lastIndexOf(logoutUrl) == -1){

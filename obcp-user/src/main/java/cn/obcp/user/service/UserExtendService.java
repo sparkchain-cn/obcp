@@ -1,17 +1,16 @@
 package cn.obcp.user.service;
 
+import java.util.List;
+
 // ##remain#import#
 
 import cn.obcp.base.Page;
 import cn.obcp.base.RetData;
 import cn.obcp.base.service.BaseService;
-import cn.obcp.user.VO.CompanyAddVo;
 import cn.obcp.user.VO.NavsNodeTree;
 import cn.obcp.user.VO.RoleResourceVo;
 import cn.obcp.user.domain.TUserExtend;
 import cn.obcp.user.domain.TUserToken;
-
-import java.util.List;
 
 /**
  * <pre>
@@ -134,7 +133,6 @@ public interface UserExtendService extends BaseService<TUserExtend, Long> {
 
 	Page<TUserExtend> findCompanyByPage(Page<TUserExtend> page);
 
-	boolean saveCompany(CompanyAddVo companyAddVo);
 
 	RetData verifyUser(Long userId, Long verifyuser, int state, String explain);
 

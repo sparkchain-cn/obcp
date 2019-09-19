@@ -39,7 +39,6 @@ import cn.obcp.base.utils.RSACoder;
 import cn.obcp.base.utils.StringUtils;
 import cn.obcp.cache.ICache;
 import cn.obcp.user.Exception.VerifyException;
-import cn.obcp.user.VO.CompanyAddVo;
 import cn.obcp.user.VO.LoginVo;
 import cn.obcp.user.VO.RoleResourceVo;
 import cn.obcp.user.VO.UserVo;
@@ -549,37 +548,6 @@ public class UserExtendController<TCompanyAddVo> extends BaseController<TUserExt
 			}					
 		}
 	}
-	
-	/**
-	 * TODO
-	 * void 后台添加企业账户
-	 * lmf 创建于2018年11月16日
-	 */
-	@ApiOperation(value="添加企业用户",notes="添加企业用户")
-	@RequestMapping(value="companyAdd",method=RequestMethod.POST)
-	@Transactional(readOnly=false,rollbackFor=Exception.class)
-	public RetData  companyAdd(@Valid CompanyAddVo companyAddVo,BindingResult bindingResult) {
-		// TODO Auto-generated method stub
-		if(bindingResult.hasErrors()) {
-			return new VerifyException(bindingResult.getAllErrors()).getErrMsg();
-		}else {
-			boolean result = userExtendService.checkMobileNum(companyAddVo.getMobile());
-			if(result) {
-				return RetData.error("号码已存在！");
-			}else {			
-				result = userExtendService.saveCompany(companyAddVo); 
-				if(result) {
-					logger.info("用户添加成功");
-					//notifySyncFreeVisitApp();
-	    			return RetData.succuess();
-	    		}else {
-	    			logger.info("用户添加成功");
-	    			return RetData.error("添加失败！");
-	    		} 	 
-			}					
-		}
-	}
-
 	
 	/**
 	 *  个人用户编辑

@@ -21,8 +21,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 
 import cn.obcp.base.Page;
@@ -32,18 +30,15 @@ import cn.obcp.base.service.BaseServiceImpl;
 import cn.obcp.base.utils.MD5Utils;
 import cn.obcp.base.utils.StringUtils;
 import cn.obcp.cache.ICache;
-import cn.obcp.user.VO.CompanyAddVo;
 import cn.obcp.user.VO.NavsNodeTree;
 import cn.obcp.user.VO.RoleResourceVo;
 import cn.obcp.user.common.UserConstans;
-import cn.obcp.user.domain.TCompany;
 import cn.obcp.user.domain.TResources;
 import cn.obcp.user.domain.TUserExtend;
 import cn.obcp.user.domain.TUserExtends;
 import cn.obcp.user.domain.TUserToken;
 import cn.obcp.user.enmu.ResourceStateEnmu;
 import cn.obcp.user.mapper.UserExtendMapper;
-import cn.obcp.user.service.CompanyService;
 import cn.obcp.user.service.ResourcesService;
 import cn.obcp.user.service.RoleService;
 import cn.obcp.user.service.UserExtendService;
@@ -74,8 +69,6 @@ public class UserExtendServiceImpl extends BaseServiceImpl<TUserExtend, Long> im
 
 	@Value("${com.sparkchain.gateway.server.name:spc-sparkchain-gateway}")
     private String gatewayServerName;
-	@Autowired
-	private CompanyService companyService;
 
 	@Autowired
 	private RoleService roleService;
@@ -144,45 +137,6 @@ public class UserExtendServiceImpl extends BaseServiceImpl<TUserExtend, Long> im
 	}
 	
 	
-	/**
-	 * 新加企业用户
-	 */
-	public boolean saveCompany(CompanyAddVo companyAddVo) {
-		TUserExtend userExtend = JSONObject.parseObject(JSON.toJSONString(companyAddVo), TUserExtend.class);
-		Long id = uuidCreator.id();
-
-		String sailt = GeneratorRandom.build();
-		Date date = Calendar.getInstance().getTime();
-		userExtend.setId(id);
-		userExtend.setCreatetime(date);
-		userExtend.setPassword(MD5Utils.MD5(userExtend.getPassword()));
-		userExtend.setSalt(sailt); //创建随机盐
-		userExtend.setState(ResourceStateEnmu.NORMAL.getStatus());//设置默认待审核
-		userExtend.setOrganization(UserConstans.USER_TYPE_COMPANY);
-		TCompany company = companyService.updateByUser(userExtend); // 根据提交的用户信息，修改用户子表信息
-		TUserExtends userextends = userExtendsService.updateByUser(userExtend); // 根据提交的用户信息，修改用户子表信息
-		boolean companyResult = companyService.save(company);
-		boolean extendResult = userExtendsService.save(userextends);
-		try {
-			Long roleId = Long.valueOf(generalRole);
-			userRoleService.bindUser(id, roleId);
-		}catch (NumberFormatException e) {
-			// TODO: handle exception
-			logger.error("没有配置普通用户账号:com.sparkchain.general.roleId}");
-		}
-		if(!extendResult) {
-			logger.error(userExtend.getId()+"创建用户子表失败！");
-			
-		}
-		if(!companyResult) {
-			logger.error(userExtend.getId()+"创建公司子表失败！");
-		}
-		if(null != userExtend.getVip() && UserConstans.USER_TYPE_VIP == userExtend.getVip()) { //免费用户，设置默认免费时间
-			String vipEndtime = redissonUtils.get(UserConstans.FREE_END_TIME);
-			userExtend.setVipEndtime(vipEndtime);
-		}
-		return  super.save(userExtend);
-	}
 	
 	/* (non-Javadoc)
 	 * @see cn.obcp.base.service.BaseServiceImpl#update(java.lang.Object)

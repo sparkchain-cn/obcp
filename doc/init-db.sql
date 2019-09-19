@@ -15,31 +15,6 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`obcp` /*!40100 DEFAULT CHARACTER SET ut
 
 USE `obcp`;
 
-/*Table structure for table `bc_company` */
-
-CREATE TABLE `bc_company` (
-  `id` bigint(80) NOT NULL,
-  `supervisor` bigint(80) DEFAULT NULL COMMENT '负责人ID',
-  `companyNo` varchar(100) DEFAULT NULL COMMENT '公司编码',
-  `companyName` varchar(200) DEFAULT NULL COMMENT '公司名称',
-  `companyAddr` varchar(500) DEFAULT NULL COMMENT '公司地址',
-  `companyTel` varbinary(50) DEFAULT NULL COMMENT '公司联系电话',
-  `taxid` varchar(100) DEFAULT NULL COMMENT '税号编码',
-  `authFile` varchar(300) DEFAULT NULL COMMENT '授权文件地址',
-  `businessLicenseFile` varchar(300) DEFAULT NULL COMMENT '营业执照文件地址',
-  `corporationName` varchar(50) DEFAULT NULL COMMENT '法人姓名',
-  `corporationCardnum` varchar(50) DEFAULT NULL COMMENT '法人身份证',
-  `status` tinyint(4) NOT NULL COMMENT '状态:-1删除,0已审核,1:审核中,2:审核失败',
-  `reviewMessage` varchar(500) DEFAULT NULL COMMENT '驳回消息',
-  `verifyTime` datetime DEFAULT NULL COMMENT '审核确认时间',
-  `createTime` datetime NOT NULL COMMENT '创建时间',
-  `updateTime` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  KEY `supervisor` (`supervisor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='公司相关信息表';
-
-/*Data for the table `bc_company` */
-
 /*Table structure for table `bc_department` */
 
 CREATE TABLE `bc_department` (

@@ -193,7 +193,6 @@ public class ResourcesController extends BaseController<TResources, Long> {
 				page = resourcesService.findUserResBindByPage(page);
 			}
 			trees = new ZTreeNode().bulid(page.getResult());
-			System.out.println(JSON.toJSONString(trees));
 			return (trees);
 		} catch (Exception e) {
 
