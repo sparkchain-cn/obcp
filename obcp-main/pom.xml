@@ -17,14 +17,14 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>Finchley.RELEASE</version>
+				<version>${spring.cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-consul-dependencies</artifactId>
-				<version>2.1.0.RELEASE</version>
+				<version>${spring.cloud.consul.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -38,7 +38,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-openfeign</artifactId>
-				<version>2.1.0.RELEASE</version>
+				<version>${spring.cloud.openfeign.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -108,6 +108,11 @@
 		<dependency>
 			<groupId>cn.obcp</groupId>
 			<artifactId>obcp-resource</artifactId>
+			<version>${framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.obcp</groupId>
+			<artifactId>obcp-cache-redis</artifactId>
 			<version>${framework.version}</version>
 		</dependency>
 		<dependency>

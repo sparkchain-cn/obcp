@@ -52,13 +52,14 @@ import cn.obcp.user.shiro.service.ShiroLifecycleBeanPostProcessorConfig;
 @AutoConfigureAfter(ShiroLifecycleBeanPostProcessorConfig.class)
 @Order(10)
 public class ShiroConfig {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(ShiroConfig.class);
 
-	
+
+	@Autowired
 	@Resource(name="redisUtils")
 	private ICache redissonUtils;
-	
+
 	@Autowired(required=false)
 	private ResourcesService resourcesService;
 
@@ -72,7 +73,7 @@ public class ShiroConfig {
 	private int redisTimeout;
 	@Value("${spring.redis.password}")
 	private String password;
-	
+
 	@Bean
 	public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -81,9 +82,9 @@ public class ShiroConfig {
 			String successUrl = redissonUtils.get("com.sparkchain.shiro.success.url");
 			String unauthorizedUrl = redissonUtils.get("com.sparkchain.shiro.unauthorized");
 			String annoPath = redissonUtils.get("com.sparkchain.shiro.anno");
-			String authPath = redissonUtils.get("com.sparkchain.shiro.anth");		
+			String authPath = redissonUtils.get("com.sparkchain.shiro.anth");
 
-			shiroFilterFactoryBean.setSecurityManager(securityManager);		
+			shiroFilterFactoryBean.setSecurityManager(securityManager);
 			Map<String, Filter> filterMap = new HashMap<>();
 			filterMap.put("privateToken", getPrivateTokenFilter());
 		    filterMap.put("logoutFilter",logoutFilter());
@@ -92,10 +93,10 @@ public class ShiroConfig {
 			shiroFilterFactoryBean.setLoginUrl(loginUrl);
 			shiroFilterFactoryBean.setSuccessUrl(successUrl);
 			shiroFilterFactoryBean.setUnauthorizedUrl(unauthorizedUrl);
-			
+
 			Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String,String>();
-			
-			
+
+
 			//不拦截地址
 	        if(!Strings.isNullOrEmpty(annoPath)) {
 	        	String[] path = annoPath.split(",");
@@ -116,9 +117,9 @@ public class ShiroConfig {
 	        		filterChainDefinitionMap.put(p, "privateToken,authc,logoutFilter");
 	        	});
 	        }
-	        
+
 			//除去上面配置文件中存在的资源路径，全部需要登陆拦截
-			List<TResources> list = resourcesService.findAll();		
+			List<TResources> list = resourcesService.findAll();
 			list.forEach(r -> {
 				if(!Strings.isNullOrEmpty(r.getPath())) {
 					filterChainDefinitionMap.put(r.getPath(),"privateToken,read,logoutFilter" );
@@ -157,7 +158,7 @@ public class ShiroConfig {
 
 	/**
      * cacheManager 缓存 redis实现
-     * 
+     *
      * @return
      */
     public RedisCacheManager cacheManager() {
@@ -169,7 +170,7 @@ public class ShiroConfig {
         redisCacheManager.setExpire(expire);
         return redisCacheManager;
     }
-    
+
     /**
 	 * redisDao层
 	 * @return
@@ -217,7 +218,7 @@ public class ShiroConfig {
     	rememberMeManager.setCookie(remembermeCookie());
     	return rememberMeManager;
     }
-	
+
     @Bean("urlFilter")
     public UrlPermissionFilter urlPerms() {
         return new UrlPermissionFilter();
@@ -237,7 +238,7 @@ public class ShiroConfig {
     public PathMatchFilter pathMatchFilter() {
         return new PathMatchFilter();
     }
-    
+
     /**
      * 设置最大出错次数
      * @return
@@ -248,7 +249,7 @@ public class ShiroConfig {
     public RetryLimitCredentialsMatcher getRetryLimitCredentialsMatcher() {
     	return new RetryLimitCredentialsMatcher(cacheManager());
     }
-    
+
 	@Bean
 	public SecurityManager securityManager(){
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
@@ -256,7 +257,7 @@ public class ShiroConfig {
 		collection.add(realm());
 		collection.add(tokenRealm());
 		securityManager.setRealms(collection);
-		securityManager.setCacheManager(cacheManager());		
+		securityManager.setCacheManager(cacheManager());
 		securityManager.setSessionManager(sessionManager());
 		securityManager.setRememberMeManager(rememberMeManager());
 		return securityManager;
@@ -294,13 +295,13 @@ public class ShiroConfig {
 		advisorAutoProxyCreator.setProxyTargetClass(true);
 		return advisorAutoProxyCreator;
 	}
-	
+
 	@Bean
 	public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
 		AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
 		authorizationAttributeSourceAdvisor.setSecurityManager(securityManager());
 		return authorizationAttributeSourceAdvisor;
-		
+
 	}
-	
+
 }
