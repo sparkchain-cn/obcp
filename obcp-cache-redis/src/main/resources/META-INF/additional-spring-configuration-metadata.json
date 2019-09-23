@@ -1,2 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.obcp.cache.redis.RedissonAutoConfiguration
+"org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.obcp.cache.redis.RedissonAutoConfiguration"

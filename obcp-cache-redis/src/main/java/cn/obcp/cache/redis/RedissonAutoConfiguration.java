@@ -24,7 +24,7 @@ public class RedissonAutoConfiguration {
 
 	@Autowired
 	private StringRedisTemplate redisTemplate;
-	
+
 	@Value("${spring.redis.host:}")
 	String redisIP = "";
 
@@ -33,7 +33,7 @@ public class RedissonAutoConfiguration {
 
 	/**
 	 * 单机模式自动装配
-	 * 
+	 *
 	 * @return
 	 */
 	@Bean
