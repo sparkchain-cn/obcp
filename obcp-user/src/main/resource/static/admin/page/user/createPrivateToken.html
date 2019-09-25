@@ -75,8 +75,10 @@
     layui.use(['form','jquery','laydate','table'],function () {
         var form = layui.form,laydate = layui.laydate,$ = layui.jquery,table = layui.table;
         laydate.render({
-            elem: '#expireTime' //指定元素
-        });
+			elem: '#expireTime',
+			format: 'yyyy-MM-dd',
+			trigger:'click'
+	  	});
         
         form.on("submit(submitBtn)",function (data) {
             var loading = layer.load(1);
