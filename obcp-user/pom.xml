@@ -15,7 +15,7 @@
 	<properties>
 		<shiro-spring.version>1.4.0</shiro-spring.version>
 		<swagger.version>2.6.1</swagger.version>
-		<jsoup.version>1.9.2</jsoup.version>
+		<jsoup.version>1.14.2</jsoup.version>
 		<jedis.version>2.9.0</jedis.version>
 	</properties>
 
